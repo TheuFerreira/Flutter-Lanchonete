@@ -1,22 +1,20 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:lanchonete_app/domain/responses/label_response.dart';
+import 'package:lanchonete_app/domain/services/label_service.dart';
 
 abstract class GetAllLabelsCase {
   Future<List<LabelResponse>> call();
 }
 
 class GetAllLabelsCaseImpl implements GetAllLabelsCase {
-  final String _apiUrl;
+  final LabelService _labelService;
 
-  const GetAllLabelsCaseImpl(this._apiUrl);
+  const GetAllLabelsCaseImpl(this._labelService);
 
   @override
   Future<List<LabelResponse>> call() async {
-    final dio = Dio();
-    final response = await dio.get('$_apiUrl/Label/All');
-    final data = response.data;
+    final data = await _labelService.getAll();
 
     List<LabelResponse> labels = [];
     for (final map in data) {

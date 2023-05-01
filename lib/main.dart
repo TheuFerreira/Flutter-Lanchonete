@@ -6,8 +6,10 @@ import 'package:lanchonete_app/domain/cases/get_all_cupons_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_labels_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_products_case.dart';
 import 'package:lanchonete_app/domain/cases/get_product_by_id_case.dart';
+import 'package:lanchonete_app/domain/services/label_service.dart';
 import 'package:lanchonete_app/domain/services/number_service.dart';
 import 'package:lanchonete_app/domain/services/product_service.dart';
+import 'package:lanchonete_app/infra/services/label_service_impl.dart';
 import 'package:lanchonete_app/infra/services/number_service_impl.dart';
 import 'package:lanchonete_app/infra/services/product_service_impl.dart';
 
@@ -26,6 +28,10 @@ void main() async {
     return ProductServiceImpl(apiUrl);
   });
 
+  injector.registerDependency<LabelService>(() {
+    return LabelServiceImpl(apiUrl);
+  });
+
   injector.registerDependency<GetProductByIdCase>(() {
     final numberService = injector.get<NumberService>();
     final productService = injector.get<ProductService>();
@@ -39,7 +45,8 @@ void main() async {
   });
 
   injector.registerDependency<GetAllLabelsCase>(() {
-    return GetAllLabelsCaseImpl(apiUrl);
+    final labelService = injector.get<LabelService>();
+    return GetAllLabelsCaseImpl(labelService);
   });
 
   injector.registerDependency<GetAllCouponsCase>(() {
