@@ -165,15 +165,15 @@ class _ProductPageState extends State<ProductPage> {
                             icon: Icons.fastfood_outlined,
                             text: product.calories,
                           ),
-                          const SizedBox(width: 12),
                           InfoWidget(
                             icon: Icons.timer_sharp,
                             text: product.preparationTime,
+                            show: product.preparationTime != '',
                           ),
-                          const SizedBox(width: 12),
                           InfoWidget(
                             icon: Icons.motorcycle,
                             text: '${product.tax} de taxa',
+                            hasMargin: false,
                           ),
                         ],
                       ),

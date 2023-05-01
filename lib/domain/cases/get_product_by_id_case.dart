@@ -30,7 +30,7 @@ class GetProductByIdCaseImpl implements GetProductByIdCase {
     final int totalRatings = data['total_ratings'];
 
     final int calories = data['calories'];
-    final caloriesStr = '${calories}g';
+    final caloriesStr = '${calories}cal';
 
     final num tax = data['tax'];
     final taxStr = _numberService.numToMoney(tax);
