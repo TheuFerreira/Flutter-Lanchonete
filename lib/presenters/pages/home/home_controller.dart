@@ -19,10 +19,16 @@ abstract class BaseHomeController with Store {
   PageStatus status = PageStatus.loading;
 
   @observable
+  PageStatus productStatus = PageStatus.loading;
+
+  @observable
   ObservableList<CouponResponse> coupons = ObservableList.of([]);
 
   @observable
   ObservableList<LabelResponse> labels = ObservableList.of([]);
+
+  @observable
+  ObservableList<LabelResponse> selectedLabels = ObservableList.of([]);
 
   @observable
   ObservableList<ProductGridResponse> mostPopular = ObservableList.of([]);
@@ -67,10 +73,33 @@ abstract class BaseHomeController with Store {
     mostPopular.addAll(ls);
   }
 
-  Future<void> _loadProducts() async {
+  @action
+  void tapLabel(LabelResponse label) => _tapLabel(label);
+  Future _tapLabel(LabelResponse label) async {
+    final contains = selectedLabels.contains(label);
+    if (contains) {
+      selectedLabels.remove(label);
+    } else {
+      selectedLabels.add(label);
+    }
+
+    if (selectedLabels.isEmpty) {
+      await _loadProducts();
+    } else {
+      final categories = selectedLabels.map((e) => e.labelId).toList();
+      await _loadProducts(categories: categories);
+    }
+  }
+
+  Future<void> _loadProducts({List<int>? categories}) async {
+    productStatus = PageStatus.loading;
+    products.clear();
+
     final getAllProductsCase = _injector.get<GetAllProductsCase>();
-    final ls = await getAllProductsCase();
+    final ls = await getAllProductsCase(categories: categories);
     products.addAll(ls);
+
+    productStatus = PageStatus.completed;
   }
 
   void onTapProduct(BuildContext context, ProductGridResponse product) {

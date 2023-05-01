@@ -4,10 +4,18 @@ import 'package:lanchonete_app/domain/responses/label_response.dart';
 class LabelWidget extends StatelessWidget {
   final LabelResponse label;
   final bool hasMargin;
+  final bool isSelected;
+  final Color? selectedBackgrounColor;
+  final Color? selectedTextColor;
+  final void Function(LabelResponse label)? onTap;
   const LabelWidget({
     super.key,
     required this.label,
     required this.hasMargin,
+    this.onTap,
+    this.isSelected = false,
+    this.selectedBackgrounColor,
+    this.selectedTextColor,
   });
 
   @override
@@ -15,14 +23,19 @@ class LabelWidget extends StatelessWidget {
     return Row(
       children: [
         InkWell(
-          onTap: () {},
+          borderRadius: BorderRadius.circular(6),
+          onTap: () {
+            if (onTap != null) {
+              onTap!(label);
+            }
+          },
           child: Container(
             padding: const EdgeInsets.symmetric(
               horizontal: 12,
               vertical: 4,
             ),
             decoration: BoxDecoration(
-              color: Colors.grey[300],
+              color: isSelected ? selectedBackgrounColor : Colors.grey[300],
               borderRadius: BorderRadius.circular(6),
             ),
             child: Row(
@@ -35,7 +48,10 @@ class LabelWidget extends StatelessWidget {
                 const SizedBox(width: 4),
                 Text(
                   label.description,
-                  style: const TextStyle(fontSize: 13),
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: isSelected ? selectedTextColor : Colors.black,
+                  ),
                 ),
               ],
             ),

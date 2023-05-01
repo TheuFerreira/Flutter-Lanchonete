@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 12, vertical: 6),
                       decoration: BoxDecoration(
-                        color: Colors.orange,
+                        color: const Color.fromARGB(255, 235, 143, 5),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: const Icon(
@@ -118,9 +118,16 @@ class _HomePageState extends State<HomePage> {
                           (e) {
                             final hasMargin =
                                 labels.indexOf(e) < labels.length - 1;
+                            final selectedLabels = controller.selectedLabels;
+                            final isSelected = selectedLabels.contains(e);
                             return LabelWidget(
                               label: e,
                               hasMargin: hasMargin,
+                              selectedBackgrounColor:
+                                  const Color.fromARGB(255, 235, 143, 5),
+                              selectedTextColor: Colors.white,
+                              isSelected: isSelected,
+                              onTap: controller.tapLabel,
                             );
                           },
                         ),
@@ -182,7 +189,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 4),
                   Observer(builder: (context) {
-                    final isLoading = controller.status == PageStatus.loading;
+                    final isLoading =
+                        controller.productStatus == PageStatus.loading;
                     List<ProductGridResponse> products =
                         controller.products.toList();
                     if (isLoading) {

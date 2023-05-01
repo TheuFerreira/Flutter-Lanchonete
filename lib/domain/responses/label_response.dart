@@ -10,4 +10,13 @@ class LabelResponse {
     this.description = '',
     this.photo,
   });
+
+  @override
+  bool operator ==(Object other) =>
+      other is LabelResponse &&
+      other.runtimeType == runtimeType &&
+      other.labelId == labelId;
+
+  @override
+  int get hashCode => labelId.hashCode;
 }
