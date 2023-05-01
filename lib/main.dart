@@ -7,7 +7,9 @@ import 'package:lanchonete_app/domain/cases/get_all_labels_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_products_case.dart';
 import 'package:lanchonete_app/domain/cases/get_product_by_id_case.dart';
 import 'package:lanchonete_app/domain/services/number_service.dart';
+import 'package:lanchonete_app/domain/services/product_service.dart';
 import 'package:lanchonete_app/infra/services/number_service_impl.dart';
+import 'package:lanchonete_app/infra/services/product_service_impl.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,14 +22,20 @@ void main() async {
     return NumberServiceImpl();
   });
 
+  injector.registerDependency<ProductService>(() {
+    return ProductServiceImpl(apiUrl);
+  });
+
   injector.registerDependency<GetProductByIdCase>(() {
     final numberService = injector.get<NumberService>();
-    return GetProductByIdCaseImpl(numberService, apiUrl);
+    final productService = injector.get<ProductService>();
+    return GetProductByIdCaseImpl(numberService, productService);
   });
 
   injector.registerDependency<GetAllProductsCase>(() {
     final numberService = injector.get<NumberService>();
-    return GetAllProductsCaseImpl(numberService, apiUrl);
+    final productService = injector.get<ProductService>();
+    return GetAllProductsCaseImpl(numberService, productService);
   });
 
   injector.registerDependency<GetAllLabelsCase>(() {

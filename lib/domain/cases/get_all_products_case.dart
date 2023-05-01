@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:lanchonete_app/domain/responses/product_grid_response.dart';
 import 'package:lanchonete_app/domain/services/number_service.dart';
+import 'package:lanchonete_app/domain/services/product_service.dart';
 
 abstract class GetAllProductsCase {
   Future<List<ProductGridResponse>> call();
@@ -10,18 +10,16 @@ abstract class GetAllProductsCase {
 
 class GetAllProductsCaseImpl implements GetAllProductsCase {
   final NumberService _numberService;
-  final String _apiUrl;
+  final ProductService _productService;
 
   const GetAllProductsCaseImpl(
     this._numberService,
-    this._apiUrl,
+    this._productService,
   );
 
   @override
   Future<List<ProductGridResponse>> call() async {
-    final dio = Dio();
-    final response = await dio.get('$_apiUrl/Product/All');
-    final data = response.data;
+    final data = await _productService.getAll();
 
     List<ProductGridResponse> products = [];
     for (final map in data) {
