@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injector/injector.dart';
 import 'package:lanchonete_app/app_widget.dart';
+import 'package:lanchonete_app/domain/cases/get_all_cupons_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_labels_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_products_case.dart';
 import 'package:lanchonete_app/domain/cases/get_product_by_id_case.dart';
@@ -31,6 +32,10 @@ void main() async {
 
   injector.registerDependency<GetAllLabelsCase>(() {
     return GetAllLabelsCaseImpl(apiUrl);
+  });
+
+  injector.registerDependency<GetAllCouponsCase>(() {
+    return GetAllCouponsCaseImpl(apiUrl);
   });
 
   runApp(const AppWidget());

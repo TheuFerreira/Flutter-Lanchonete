@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:lanchonete_app/domain/responses/product_grid_response.dart';
 import 'package:lanchonete_app/presenters/pages/home/home_controller.dart';
+import 'package:lanchonete_app/presenters/pages/home/widgets/card_coupon_widget.dart';
 import 'package:lanchonete_app/presenters/pages/home/widgets/card_product_widget.dart';
 import 'package:lanchonete_app/presenters/pages/home/widgets/search_widget.dart';
 import 'package:lanchonete_app/presenters/pages/product/widgets/shimmer_widget.dart';
@@ -49,35 +50,27 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  const SizedBox(width: 10),
-                  ...[1, 2, 3, 4, 5, 6].map(
-                    (e) => Card(
-                      elevation: 0,
-                      margin: const EdgeInsets.symmetric(horizontal: 6),
-                      clipBehavior: Clip.hardEdge,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
+            Observer(builder: (context) {
+              final isLoading = controller.status == PageStatus.loading;
+              final coupons = controller.coupons;
+              return ShimmerWidget(
+                isLoading: isLoading,
+                height: 120,
+                child: SingleChildScrollView(
+                  physics: const BouncingScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 10),
+                      ...coupons.map(
+                        (e) => CardCouponWidget(coupon: e),
                       ),
-                      borderOnForeground: false,
-                      child: SizedBox(
-                        height: 110,
-                        width: 225,
-                        child: Image.asset(
-                          'assets/images/cupon.png',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
+                      const SizedBox(width: 10),
+                    ],
                   ),
-                  const SizedBox(width: 10),
-                ],
-              ),
-            ),
+                ),
+              );
+            }),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),

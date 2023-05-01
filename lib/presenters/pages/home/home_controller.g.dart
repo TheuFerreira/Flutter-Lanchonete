@@ -25,6 +25,22 @@ mixin _$HomeController on BaseHomeController, Store {
     });
   }
 
+  late final _$couponsAtom =
+      Atom(name: 'BaseHomeController.coupons', context: context);
+
+  @override
+  ObservableList<CouponResponse> get coupons {
+    _$couponsAtom.reportRead();
+    return super.coupons;
+  }
+
+  @override
+  set coupons(ObservableList<CouponResponse> value) {
+    _$couponsAtom.reportWrite(value, super.coupons, () {
+      super.coupons = value;
+    });
+  }
+
   late final _$labelsAtom =
       Atom(name: 'BaseHomeController.labels', context: context);
 
@@ -91,6 +107,7 @@ mixin _$HomeController on BaseHomeController, Store {
   String toString() {
     return '''
 status: ${status},
+coupons: ${coupons},
 labels: ${labels},
 mostPopular: ${mostPopular},
 products: ${products}

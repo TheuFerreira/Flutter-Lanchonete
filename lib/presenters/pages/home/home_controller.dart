@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
+import 'package:lanchonete_app/domain/cases/get_all_cupons_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_labels_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_products_case.dart';
+import 'package:lanchonete_app/domain/responses/coupon_response.dart';
 import 'package:lanchonete_app/domain/responses/label_response.dart';
 import 'package:lanchonete_app/domain/responses/product_grid_response.dart';
 import 'package:lanchonete_app/presenters/pages/product/product_page.dart';
@@ -15,6 +17,9 @@ class HomeController = BaseHomeController with _$HomeController;
 abstract class BaseHomeController with Store {
   @observable
   PageStatus status = PageStatus.loading;
+
+  @observable
+  ObservableList<CouponResponse> coupons = ObservableList.of([]);
 
   @observable
   ObservableList<LabelResponse> labels = ObservableList.of([]);
@@ -36,11 +41,18 @@ abstract class BaseHomeController with Store {
   void _load() async {
     status = PageStatus.loading;
 
+    await _loadCoupons();
     await _loadLabels();
     await _loadMostPopular();
     await _loadProducts();
 
     status = PageStatus.completed;
+  }
+
+  Future<void> _loadCoupons() async {
+    final getAllCouponsCase = _injector.get<GetAllCouponsCase>();
+    final ls = await getAllCouponsCase();
+    coupons.addAll(ls);
   }
 
   Future<void> _loadLabels() async {
