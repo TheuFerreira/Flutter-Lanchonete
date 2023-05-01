@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
-import 'package:lanchonete_app/domain/cases/get_all_cupons_case.dart';
+import 'package:lanchonete_app/domain/cases/get_all_coupons_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_labels_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_products_case.dart';
 import 'package:lanchonete_app/domain/responses/coupon_response.dart';

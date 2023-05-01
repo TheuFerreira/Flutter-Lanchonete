@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injector/injector.dart';
 import 'package:lanchonete_app/app_widget.dart';
-import 'package:lanchonete_app/domain/cases/get_all_cupons_case.dart';
+import 'package:lanchonete_app/domain/cases/get_all_coupons_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_labels_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_products_case.dart';
 import 'package:lanchonete_app/domain/cases/get_product_by_id_case.dart';
+import 'package:lanchonete_app/domain/services/coupon_service.dart';
 import 'package:lanchonete_app/domain/services/label_service.dart';
 import 'package:lanchonete_app/domain/services/number_service.dart';
 import 'package:lanchonete_app/domain/services/product_service.dart';
+import 'package:lanchonete_app/infra/services/coupon_service_impl.dart';
 import 'package:lanchonete_app/infra/services/label_service_impl.dart';
 import 'package:lanchonete_app/infra/services/number_service_impl.dart';
 import 'package:lanchonete_app/infra/services/product_service_impl.dart';
@@ -32,6 +34,10 @@ void main() async {
     return LabelServiceImpl(apiUrl);
   });
 
+  injector.registerDependency<CouponService>(() {
+    return CouponServiceImpl(apiUrl);
+  });
+
   injector.registerDependency<GetProductByIdCase>(() {
     final numberService = injector.get<NumberService>();
     final productService = injector.get<ProductService>();
@@ -50,7 +56,8 @@ void main() async {
   });
 
   injector.registerDependency<GetAllCouponsCase>(() {
-    return GetAllCouponsCaseImpl(apiUrl);
+    final couponService = injector.get<CouponService>();
+    return GetAllCouponsCaseImpl(couponService);
   });
 
   runApp(const AppWidget());

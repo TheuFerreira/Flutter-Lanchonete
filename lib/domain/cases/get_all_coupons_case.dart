@@ -1,22 +1,20 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:lanchonete_app/domain/responses/coupon_response.dart';
+import 'package:lanchonete_app/domain/services/coupon_service.dart';
 
 abstract class GetAllCouponsCase {
   Future<List<CouponResponse>> call();
 }
 
 class GetAllCouponsCaseImpl implements GetAllCouponsCase {
-  final String _apiUrl;
+  final CouponService _couponService;
 
-  const GetAllCouponsCaseImpl(this._apiUrl);
+  const GetAllCouponsCaseImpl(this._couponService);
 
   @override
   Future<List<CouponResponse>> call() async {
-    final dio = Dio();
-    final response = await dio.get('$_apiUrl/Coupon/All');
-    final data = response.data;
+    final data = await _couponService.getAll();
 
     List<CouponResponse> labels = [];
     for (final map in data) {
