@@ -15,6 +15,8 @@ part 'home_controller.g.dart';
 class HomeController = BaseHomeController with _$HomeController;
 
 abstract class BaseHomeController with Store {
+  final searchController = TextEditingController();
+
   @observable
   PageStatus status = PageStatus.loading;
 
@@ -74,6 +76,12 @@ abstract class BaseHomeController with Store {
   }
 
   @action
+  void onSearch(String? value) => _search(value);
+  Future<void> _search(String? value) async {
+    await _loadProducts();
+  }
+
+  @action
   void tapLabel(LabelResponse label) => _tapLabel(label);
   Future _tapLabel(LabelResponse label) async {
     final contains = selectedLabels.contains(label);
@@ -83,20 +91,21 @@ abstract class BaseHomeController with Store {
       selectedLabels.add(label);
     }
 
-    if (selectedLabels.isEmpty) {
-      await _loadProducts();
-    } else {
-      final categories = selectedLabels.map((e) => e.labelId).toList();
-      await _loadProducts(categories: categories);
-    }
+    await _loadProducts();
   }
 
-  Future<void> _loadProducts({List<int>? categories}) async {
+  Future<void> _loadProducts() async {
+    final categories = selectedLabels.isEmpty
+        ? null
+        : selectedLabels.map((e) => e.labelId).toList();
+
+    final search = searchController.text.isEmpty ? null : searchController.text;
+
     productStatus = PageStatus.loading;
     products.clear();
 
     final getAllProductsCase = _injector.get<GetAllProductsCase>();
-    final ls = await getAllProductsCase(categories: categories);
+    final ls = await getAllProductsCase(categories: categories, search: search);
     products.addAll(ls);
 
     productStatus = PageStatus.completed;

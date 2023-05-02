@@ -85,8 +85,11 @@ class _HomePageState extends State<HomePage> {
                   const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
               child: Row(
                 children: [
-                  const Expanded(
-                    child: SearchWidget(),
+                  Expanded(
+                    child: SearchWidget(
+                      controller: controller.searchController,
+                      onChanged: controller.onSearch,
+                    ),
                   ),
                   const SizedBox(width: 16),
                   InkWell(

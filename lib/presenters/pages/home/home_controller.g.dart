@@ -25,6 +25,22 @@ mixin _$HomeController on BaseHomeController, Store {
     });
   }
 
+  late final _$productStatusAtom =
+      Atom(name: 'BaseHomeController.productStatus', context: context);
+
+  @override
+  PageStatus get productStatus {
+    _$productStatusAtom.reportRead();
+    return super.productStatus;
+  }
+
+  @override
+  set productStatus(PageStatus value) {
+    _$productStatusAtom.reportWrite(value, super.productStatus, () {
+      super.productStatus = value;
+    });
+  }
+
   late final _$couponsAtom =
       Atom(name: 'BaseHomeController.coupons', context: context);
 
@@ -54,6 +70,22 @@ mixin _$HomeController on BaseHomeController, Store {
   set labels(ObservableList<LabelResponse> value) {
     _$labelsAtom.reportWrite(value, super.labels, () {
       super.labels = value;
+    });
+  }
+
+  late final _$selectedLabelsAtom =
+      Atom(name: 'BaseHomeController.selectedLabels', context: context);
+
+  @override
+  ObservableList<LabelResponse> get selectedLabels {
+    _$selectedLabelsAtom.reportRead();
+    return super.selectedLabels;
+  }
+
+  @override
+  set selectedLabels(ObservableList<LabelResponse> value) {
+    _$selectedLabelsAtom.reportWrite(value, super.selectedLabels, () {
+      super.selectedLabels = value;
     });
   }
 
@@ -104,11 +136,35 @@ mixin _$HomeController on BaseHomeController, Store {
   }
 
   @override
+  void onSearch(String? value) {
+    final _$actionInfo = _$BaseHomeControllerActionController.startAction(
+        name: 'BaseHomeController.onSearch');
+    try {
+      return super.onSearch(value);
+    } finally {
+      _$BaseHomeControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void tapLabel(LabelResponse label) {
+    final _$actionInfo = _$BaseHomeControllerActionController.startAction(
+        name: 'BaseHomeController.tapLabel');
+    try {
+      return super.tapLabel(label);
+    } finally {
+      _$BaseHomeControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 status: ${status},
+productStatus: ${productStatus},
 coupons: ${coupons},
 labels: ${labels},
+selectedLabels: ${selectedLabels},
 mostPopular: ${mostPopular},
 products: ${products}
     ''';

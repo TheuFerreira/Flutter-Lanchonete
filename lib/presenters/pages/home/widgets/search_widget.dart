@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
 
 class SearchWidget extends StatelessWidget {
-  const SearchWidget({super.key});
+  final TextEditingController controller;
+  final void Function(String? value) onChanged;
+
+  const SearchWidget({
+    super.key,
+    required this.controller,
+    required this.onChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: controller,
+      keyboardType: TextInputType.text,
+      onSubmitted: onChanged,
       style: const TextStyle(
         color: Colors.black,
       ),

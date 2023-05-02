@@ -9,9 +9,11 @@ class ProductServiceImpl implements ProductService {
   const ProductServiceImpl(this._apiUrl);
 
   @override
-  Future<List<dynamic>> getAll() async {
+  Future<List<dynamic>> getAll(Object parameters) async {
+    final json = jsonEncode(parameters);
+
     final dio = Dio();
-    final response = await dio.get('$_apiUrl/Product/All');
+    final response = await dio.post('$_apiUrl/Product/All', data: json);
     final data = response.data;
     return data;
   }
@@ -25,8 +27,8 @@ class ProductServiceImpl implements ProductService {
   }
 
   @override
-  Future<List> getAllByCategories(List<int> categories) async {
-    final json = jsonEncode(categories);
+  Future<List> getAllByCategories(Object parameters) async {
+    final json = jsonEncode(parameters);
 
     final dio = Dio();
     final response = await dio.post(
