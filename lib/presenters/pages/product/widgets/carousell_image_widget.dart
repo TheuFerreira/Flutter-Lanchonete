@@ -23,7 +23,7 @@ class CarousellImageWidget extends StatelessWidget {
     final hasImage = images != null;
     return SizedBox(
       width: double.infinity,
-      height: 400 - 24,
+      height: height,
       child: Stack(
         fit: StackFit.expand,
         children: [

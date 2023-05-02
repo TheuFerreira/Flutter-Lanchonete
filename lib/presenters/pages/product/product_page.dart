@@ -37,6 +37,21 @@ class _ProductPageState extends State<ProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        primary: true,
+        elevation: 0,
+        toolbarHeight: 40,
+        backgroundColor: Colors.white,
+        foregroundColor: const Color.fromARGB(255, 235, 143, 5),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.shopping_cart_outlined),
+            onPressed: () {
+              // TODO: Cart
+            },
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Observer(builder: (context) {
           final product = controller.product;
@@ -60,31 +75,6 @@ class _ProductPageState extends State<ProductPage> {
                         ),
                         const SizedBox(height: 24),
                       ],
-                    ),
-                    Positioned(
-                      left: 1,
-                      right: 1,
-                      top: 1,
-                      child: SafeArea(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            IconButton(
-                              onPressed: () =>
-                                  controller.toPreviousPage(context),
-                              icon: const Icon(Icons.arrow_back),
-                              color: Colors.white.withOpacity(0.5),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                // TODO: Cart
-                              },
-                              icon: const Icon(Icons.shopping_cart_outlined),
-                              color: Colors.white.withOpacity(0.5),
-                            ),
-                          ],
-                        ),
-                      ),
                     ),
                     Positioned(
                       bottom: 1,

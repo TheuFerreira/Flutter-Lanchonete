@@ -34,12 +34,16 @@ class _HomePageState extends State<HomePage> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              // TODO: Favorites
+            },
             icon: const Icon(Icons.favorite_outline),
             color: Colors.black,
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              // TODO: Cart
+            },
             icon: const Icon(Icons.shopping_cart_outlined),
             color: Colors.black,
           ),
@@ -63,7 +67,12 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       const SizedBox(width: 10),
                       ...coupons.map(
-                        (e) => CardCouponWidget(coupon: e),
+                        (e) => CardCouponWidget(
+                          coupon: e,
+                          onTap: (_) {
+                            // TODO: Coupon
+                          },
+                        ),
                       ),
                       const SizedBox(width: 10),
                     ],
