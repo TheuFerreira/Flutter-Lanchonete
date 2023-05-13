@@ -1,16 +1,16 @@
-import 'package:dio/dio.dart';
+import 'package:lanchonete_app/core/fetch.dart';
 import 'package:lanchonete_app/domain/services/coupon_service.dart';
 
 class CouponServiceImpl implements CouponService {
-  final String _apiUrl;
+  final Fetch fetch;
 
-  const CouponServiceImpl(this._apiUrl);
+  const CouponServiceImpl({
+    required this.fetch,
+  });
 
   @override
   Future<List<dynamic>> getAll() async {
-    final dio = Dio();
-    final response = await dio.get('$_apiUrl/Coupon/All');
-    final data = response.data;
+    final data = await fetch.get(route: '/Coupon/All');
     return data;
   }
 }

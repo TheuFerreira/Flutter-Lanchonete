@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injector/injector.dart';
 import 'package:lanchonete_app/app_widget.dart';
+import 'package:lanchonete_app/core/fetch.dart';
 import 'package:lanchonete_app/domain/cases/get_all_coupons_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_labels_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_products_case.dart';
@@ -22,20 +23,27 @@ void main() async {
   final apiUrl = dotenv.get('API_URL');
 
   final injector = Injector.appInstance;
+  injector.registerSingleton(() {
+    return Fetch(apiUrl: apiUrl);
+  });
+
   injector.registerDependency<NumberService>(() {
     return NumberServiceImpl();
   });
 
   injector.registerDependency<ProductService>(() {
-    return ProductServiceImpl(apiUrl);
+    final fetch = injector.get<Fetch>();
+    return ProductServiceImpl(fetch: fetch);
   });
 
   injector.registerDependency<LabelService>(() {
-    return LabelServiceImpl(apiUrl);
+    final fetch = injector.get<Fetch>();
+    return LabelServiceImpl(fetch: fetch);
   });
 
   injector.registerDependency<CouponService>(() {
-    return CouponServiceImpl(apiUrl);
+    final fetch = injector.get<Fetch>();
+    return CouponServiceImpl(fetch: fetch);
   });
 
   injector.registerDependency<GetProductByIdCase>(() {

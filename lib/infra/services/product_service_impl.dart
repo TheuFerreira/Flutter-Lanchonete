@@ -1,28 +1,29 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
+import 'package:lanchonete_app/core/fetch.dart';
 import 'package:lanchonete_app/domain/services/product_service.dart';
 
 class ProductServiceImpl implements ProductService {
-  final String _apiUrl;
+  final Fetch fetch;
 
-  const ProductServiceImpl(this._apiUrl);
+  const ProductServiceImpl({
+    required this.fetch,
+  });
 
   @override
   Future<List<dynamic>> getAll(Object parameters) async {
     final json = jsonEncode(parameters);
 
-    final dio = Dio();
-    final response = await dio.post('$_apiUrl/Product/All', data: json);
-    final data = response.data;
+    final data = await fetch.post(
+      route: '/Product/All',
+      params: json,
+    );
     return data;
   }
 
   @override
   Future<dynamic> getById(int productId) async {
-    final dio = Dio();
-    final response = await dio.get('$_apiUrl/Product/ById/$productId');
-    final data = response.data;
+    final data = await fetch.get(route: '/Product/ById/$productId');
     return data;
   }
 
@@ -30,12 +31,10 @@ class ProductServiceImpl implements ProductService {
   Future<List> getAllByCategories(Object parameters) async {
     final json = jsonEncode(parameters);
 
-    final dio = Dio();
-    final response = await dio.post(
-      '$_apiUrl/Product/AllByCategories',
-      data: json,
+    final data = await fetch.post(
+      route: '/Product/AllByCategories',
+      params: json,
     );
-    final data = response.data;
     return data;
   }
 }

@@ -1,16 +1,16 @@
-import 'package:dio/dio.dart';
+import 'package:lanchonete_app/core/fetch.dart';
 import 'package:lanchonete_app/domain/services/label_service.dart';
 
 class LabelServiceImpl implements LabelService {
-  final String _apiUrl;
+  final Fetch fetch;
 
-  const LabelServiceImpl(this._apiUrl);
+  const LabelServiceImpl({
+    required this.fetch,
+  });
 
   @override
   Future<List<dynamic>> getAll() async {
-    final dio = Dio();
-    final response = await dio.get('$_apiUrl/Label/All');
-    final data = response.data;
+    final data = await fetch.get(route: '/Label/All');
     return data;
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lanchonete_app/presenters/pages/home/home_page.dart';
+import 'package:lanchonete_app/domain/responses/product_grid_response.dart';
+import 'package:lanchonete_app/presenters/pages/product/product_page.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});
@@ -12,7 +13,7 @@ class AppWidget extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
+      home: ProductPage(product: ProductGridResponse(productId: 1)),
     );
   }
 }
