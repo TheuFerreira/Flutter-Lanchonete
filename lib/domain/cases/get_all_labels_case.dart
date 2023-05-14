@@ -14,23 +14,15 @@ class GetAllLabelsCaseImpl implements GetAllLabelsCase {
 
   @override
   Future<List<LabelResponse>> call() async {
-    final data = await _labelService.getAll();
+    final models = await _labelService.getAll();
 
-    List<LabelResponse> labels = [];
-    for (final map in data) {
-      final labelId = map['label_id'];
-      final description = map['description'];
-      final image = map['image'];
-      final photo = base64Decode(image);
-
-      final label = LabelResponse(
-        labelId: labelId,
-        description: description,
-        photo: photo,
-      );
-
-      labels.add(label);
-    }
+    final labels = models
+        .map((e) => LabelResponse(
+              labelId: e.labelId,
+              description: e.description,
+              photo: base64Decode(e.photo),
+            ))
+        .toList();
 
     return labels;
   }

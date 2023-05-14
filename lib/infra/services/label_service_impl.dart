@@ -1,5 +1,6 @@
 import 'package:lanchonete_app/core/fetch.dart';
 import 'package:lanchonete_app/domain/services/label_service.dart';
+import 'package:lanchonete_app/infra/models/label_info_model.dart';
 
 class LabelServiceImpl implements LabelService {
   final Fetch fetch;
@@ -9,8 +10,10 @@ class LabelServiceImpl implements LabelService {
   });
 
   @override
-  Future<List<dynamic>> getAll() async {
+  Future<List<LabelInfoModel>> getAll() async {
     final data = await fetch.get(route: '/Label/All');
-    return data;
+    final rows = data as List<dynamic>;
+    final models = rows.map((e) => LabelInfoModel.fromMap(e)).toList();
+    return models;
   }
 }
