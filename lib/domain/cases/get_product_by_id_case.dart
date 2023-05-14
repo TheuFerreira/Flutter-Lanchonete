@@ -1,10 +1,12 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
+import 'package:lanchonete_app/core/fetch.dart';
+import 'package:lanchonete_app/domain/errors/product_exception.dart';
 import 'package:lanchonete_app/domain/responses/label_response.dart';
 import 'package:lanchonete_app/domain/responses/product_info_response.dart';
 import 'package:lanchonete_app/domain/services/number_service.dart';
 import 'package:lanchonete_app/domain/services/product_service.dart';
+import 'package:lanchonete_app/infra/models/product_info_model.dart';
 
 abstract class GetProductByIdCase {
   Future<ProductInfoResponse> call(int productId);
@@ -21,53 +23,46 @@ class GetProductByIdCaseImpl implements GetProductByIdCase {
 
   @override
   Future<ProductInfoResponse> call(int productId) async {
-    final data = await _productService.getById(productId);
+    ProductInfoModel info;
+    try {
+      info = await _productService.getById(productId);
+    } on FetchNotFoundException {
+      throw ProductNotFoundException();
+    }
 
-    final price = data['price'];
-    final priceConverted = _numberService.numToMoney(price);
+    final priceConverted = _numberService.numToMoney(info.price);
 
-    final num rating = data['rating'];
-    final int totalRatings = data['total_ratings'];
+    final num rating = info.rating;
+    final totalRatings = info.totalRatings.toInt();
 
-    final int calories = data['calories'];
+    final int calories = info.calories.toInt();
     final caloriesStr = '${calories}cal';
 
-    final num tax = data['tax'];
+    final num tax = info.tax;
     final taxStr = _numberService.numToMoney(tax);
 
-    final List<dynamic> images = data['images'];
-    List<Uint8List> photos = [];
-    for (dynamic image in images) {
-      final photo = base64Decode(image);
-      photos.add(photo);
-    }
+    final photos = info.images!.map((e) => base64Decode(e)).toList();
 
-    final List<dynamic> labelsMap = data['labels'];
-    List<LabelResponse> labels = [];
-    for (dynamic map in labelsMap) {
-      final labelId = map['label_id'];
-      final description = map['description'];
-      final image = map['photo'];
-      final photo = base64Decode(image);
-
-      final label = LabelResponse(
-        labelId: labelId,
-        description: description,
-        photo: photo,
-      );
-      labels.add(label);
-    }
+    final labels = info.labels!
+        .map(
+          (e) => LabelResponse(
+            labelId: e.labelId,
+            description: e.description,
+            photo: base64Decode(e.photo),
+          ),
+        )
+        .toList();
 
     final product = ProductInfoResponse(
-      title: data['title'],
-      description: data['description'],
+      title: info.title,
+      description: info.description,
       priceStr: priceConverted,
-      price: price,
+      price: info.price,
       rating: rating.toDouble(),
       totalRatings: totalRatings.toString(),
       calories: caloriesStr,
       tax: taxStr,
-      preparationTime: data['preparation_time'],
+      preparationTime: info.preparationTime,
       photos: photos,
       labels: labels,
     );

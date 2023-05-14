@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 import 'package:lanchonete_app/domain/cases/get_product_by_id_case.dart';
+import 'package:lanchonete_app/domain/errors/product_exception.dart';
 import 'package:lanchonete_app/domain/responses/product_grid_response.dart';
 import 'package:lanchonete_app/domain/responses/product_info_response.dart';
 import 'package:lanchonete_app/domain/services/number_service.dart';
@@ -38,11 +39,15 @@ abstract class BaseProductController with Store {
   _load(int productId) async {
     status = PageStatus.loading;
 
-    final getProductByIdCase = _injector.get<GetProductByIdCase>();
-    product = await getProductByIdCase(productId);
+    try {
+      final getProductByIdCase = _injector.get<GetProductByIdCase>();
+      product = await getProductByIdCase(productId);
 
-    _calculateTotalPrice();
-    status = PageStatus.completed;
+      _calculateTotalPrice();
+      status = PageStatus.completed;
+    } on ProductException {
+      status = PageStatus.notFound;
+    }
   }
 
   toPreviousPage(BuildContext context) {

@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:lanchonete_app/core/fetch.dart';
 import 'package:lanchonete_app/domain/services/product_service.dart';
+import 'package:lanchonete_app/infra/models/label_info_model.dart';
+import 'package:lanchonete_app/infra/models/product_info_model.dart';
 
 class ProductServiceImpl implements ProductService {
   final Fetch fetch;
@@ -22,8 +24,13 @@ class ProductServiceImpl implements ProductService {
   }
 
   @override
-  Future<dynamic> getById(int productId) async {
-    final data = await fetch.get(route: '/Product/ById/$productId');
+  Future<ProductInfoModel> getById(int productId) async {
+    final map = await fetch.get(route: '/Product/ById/$productId');
+    final data = ProductInfoModel.fromMap(map);
+    data.labels = (map['labels'] as List<dynamic>)
+        .map((e) => LabelInfoModel.fromMap(e))
+        .toList();
+    data.images = map['images'].cast<String>();
     return data;
   }
 

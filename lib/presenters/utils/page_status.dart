@@ -1,1 +1,1 @@
-enum PageStatus { loading, completed }
+enum PageStatus { loading, completed, notFound }

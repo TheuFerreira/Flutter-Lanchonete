@@ -52,12 +52,35 @@ class _ProductPageState extends State<ProductPage> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Observer(builder: (context) {
-          final product = controller.product;
-          final labels = product.labels;
-          final isLoading = controller.status == PageStatus.loading;
-          return Column(
+      body: Observer(builder: (context) {
+        final product = controller.product;
+        final labels = product.labels;
+        final isLoading = controller.status == PageStatus.loading;
+        final isNotFound = controller.status == PageStatus.notFound;
+        if (isNotFound) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/hamburger.png',
+                  width: 175,
+                ),
+                const Text(
+                  'Product not found',
+                  style: TextStyle(
+                    fontSize: 28,
+                    color: Color.fromARGB(255, 235, 143, 5),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+        return SingleChildScrollView(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               SizedBox(
@@ -200,15 +223,20 @@ class _ProductPageState extends State<ProductPage> {
                 ),
               ),
             ],
-          );
-        }),
-      ),
-      bottomNavigationBar: Container(
-        height: 60,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Observer(builder: (context) {
-          final isLoading = controller.status == PageStatus.loading;
-          return Row(
+          ),
+        );
+      }),
+      bottomNavigationBar: Observer(builder: (context) {
+        final isLoading = controller.status == PageStatus.loading;
+        final isNotFound = controller.status == PageStatus.notFound;
+        if (isNotFound) {
+          return Container(height: 0);
+        }
+
+        return Container(
+          height: 60,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
             children: [
               TotalPriceWidget(
                 isLoading: isLoading,
@@ -223,9 +251,9 @@ class _ProductPageState extends State<ProductPage> {
                 text: 'Adicionar ao carrinho',
               ),
             ],
-          );
-        }),
-      ),
+          ),
+        );
+      }),
     );
   }
 }
