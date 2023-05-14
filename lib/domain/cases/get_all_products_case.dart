@@ -30,28 +30,20 @@ class GetAllProductsCaseImpl implements GetAllProductsCase {
       'search': search,
     };
 
-    List<dynamic> data = await _productService.getAllByCategories(parameters);
-
-    List<ProductGridResponse> products = [];
-    for (final map in data) {
-      final productId = map['product_id'];
-      final title = map['title'];
-      final rating = map['rating'];
-      final image = map['image'];
-      final photo = base64Decode(image);
-
-      final price = map['price'];
+    final models = await _productService.getAllByCategories(parameters);
+    final products = models.map((e) {
+      final price = e.price;
       final priceStr = _numberService.numToMoney(price);
 
-      final response = ProductGridResponse(
-        productId: productId,
-        title: title,
+      final photo = base64Decode(e.image);
+      return ProductGridResponse(
+        productId: e.productId,
+        title: e.title,
         price: priceStr,
-        rating: rating,
+        rating: e.rating,
         photo: photo,
       );
-      products.add(response);
-    }
+    }).toList();
 
     return products;
   }
