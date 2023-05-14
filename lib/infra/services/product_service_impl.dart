@@ -13,17 +13,6 @@ class ProductServiceImpl implements ProductService {
   });
 
   @override
-  Future<List<dynamic>> getAll(Object parameters) async {
-    final json = jsonEncode(parameters);
-
-    final data = await fetch.post(
-      route: '/Product/All',
-      params: json,
-    );
-    return data;
-  }
-
-  @override
   Future<ProductInfoModel> getById(int productId) async {
     final map = await fetch.get(route: '/Product/ById/$productId');
     final data = ProductInfoModel.fromMap(map);

@@ -95,11 +95,12 @@ abstract class BaseHomeController with Store {
   }
 
   Future<void> _loadProducts() async {
-    final categories = selectedLabels.isEmpty
-        ? null
-        : selectedLabels.map((e) => e.labelId).toList();
+    List<int> categories = [];
+    if (selectedLabels.isNotEmpty) {
+      categories = selectedLabels.map((e) => e.labelId).toList();
+    }
 
-    final search = searchController.text.isEmpty ? null : searchController.text;
+    final search = searchController.text.isEmpty ? '' : searchController.text;
 
     productStatus = PageStatus.loading;
     products.clear();

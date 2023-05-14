@@ -5,8 +5,10 @@ import 'package:lanchonete_app/domain/services/number_service.dart';
 import 'package:lanchonete_app/domain/services/product_service.dart';
 
 abstract class GetAllProductsCase {
-  Future<List<ProductGridResponse>> call(
-      {List<int>? categories, String? search});
+  Future<List<ProductGridResponse>> call({
+    List<int>? categories,
+    String search = '',
+  });
 }
 
 class GetAllProductsCaseImpl implements GetAllProductsCase {
@@ -21,19 +23,14 @@ class GetAllProductsCaseImpl implements GetAllProductsCase {
   @override
   Future<List<ProductGridResponse>> call({
     List<int>? categories,
-    String? search,
+    String search = '',
   }) async {
     Map<String, dynamic> parameters = {
-      'categories': categories,
+      'categories': categories ?? [],
       'search': search,
     };
 
-    List<dynamic> data;
-    if (categories == null) {
-      data = await _productService.getAll(parameters);
-    } else {
-      data = await _productService.getAllByCategories(parameters);
-    }
+    List<dynamic> data = await _productService.getAllByCategories(parameters);
 
     List<ProductGridResponse> products = [];
     for (final map in data) {
