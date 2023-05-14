@@ -14,21 +14,13 @@ class GetAllCouponsCaseImpl implements GetAllCouponsCase {
 
   @override
   Future<List<CouponResponse>> call() async {
-    final data = await _couponService.getAll();
-
-    List<CouponResponse> labels = [];
-    for (final map in data) {
-      final couponId = map['coupon_id'];
-      final image = map['image'];
-      final photo = base64Decode(image);
-
-      final label = CouponResponse(
-        couponId: couponId,
-        photo: photo,
+    final models = await _couponService.getAll();
+    final labels = models.map((e) {
+      return CouponResponse(
+        couponId: e.couponId,
+        photo: base64Decode(e.image),
       );
-
-      labels.add(label);
-    }
+    }).toList();
 
     return labels;
   }

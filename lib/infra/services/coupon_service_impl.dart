@@ -1,5 +1,6 @@
 import 'package:lanchonete_app/core/fetch.dart';
 import 'package:lanchonete_app/domain/services/coupon_service.dart';
+import 'package:lanchonete_app/infra/models/coupon_all_model.dart';
 
 class CouponServiceImpl implements CouponService {
   final Fetch fetch;
@@ -9,8 +10,10 @@ class CouponServiceImpl implements CouponService {
   });
 
   @override
-  Future<List<dynamic>> getAll() async {
+  Future<List<CouponAllModel>> getAll() async {
     final data = await fetch.get(route: '/Coupon/All');
-    return data;
+    final rows = data as List<dynamic>;
+    final models = rows.map((e) => CouponAllModel.fromMap(e)).toList();
+    return models;
   }
 }
