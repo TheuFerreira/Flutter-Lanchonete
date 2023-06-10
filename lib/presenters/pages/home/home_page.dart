@@ -7,6 +7,7 @@ import 'package:lanchonete_app/presenters/pages/home/widgets/card_product_widget
 import 'package:lanchonete_app/presenters/pages/home/widgets/search_widget.dart';
 import 'package:lanchonete_app/presenters/pages/product/widgets/shimmer_widget.dart';
 import 'package:lanchonete_app/presenters/utils/page_status.dart';
+import 'package:lanchonete_app/presenters/widgets/badge_icon_widget.dart';
 import 'package:lanchonete_app/presenters/widgets/label_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -33,19 +34,27 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         actions: [
-          IconButton(
-            onPressed: () {
+          BadgeIconWidget(
+            value: '1',
+            badgeColor: const Color.fromARGB(255, 235, 143, 5),
+            iconData: const Icon(
+              Icons.favorite_outline,
+              color: Colors.black,
+            ),
+            onTap: () {
               // TODO: Favorites
             },
-            icon: const Icon(Icons.favorite_outline),
-            color: Colors.black,
           ),
-          IconButton(
-            onPressed: () {
+          BadgeIconWidget(
+            value: '1',
+            badgeColor: const Color.fromARGB(255, 235, 143, 5),
+            iconData: const Icon(
+              Icons.shopping_cart_outlined,
+              color: Colors.black,
+            ),
+            onTap: () {
               // TODO: Cart
             },
-            icon: const Icon(Icons.shopping_cart_outlined),
-            color: Colors.black,
           ),
         ],
       ),
