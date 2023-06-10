@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:injector/injector.dart';
 import 'package:lanchonete_app/app_widget.dart';
 import 'package:lanchonete_app/core/fetch.dart';
+import 'package:lanchonete_app/domain/cases/get_all_best_sellers_products_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_coupons_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_labels_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_products_case.dart';
@@ -66,6 +67,12 @@ void main() async {
   injector.registerDependency<GetAllCouponsCase>(() {
     final couponService = injector.get<CouponService>();
     return GetAllCouponsCaseImpl(couponService);
+  });
+
+  injector.registerDependency<GetAllBestSellersProductsCase>(() {
+    final productService = injector.get<ProductService>();
+    final numberService = injector.get<NumberService>();
+    return GetAllBestSellersProductsCaseImpl(productService, numberService);
   });
 
   runApp(const AppWidget());
