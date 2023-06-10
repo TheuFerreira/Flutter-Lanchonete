@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
+import 'package:lanchonete_app/domain/cases/get_all_best_sellers_products_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_coupons_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_labels_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_products_case.dart';
@@ -21,6 +22,9 @@ abstract class BaseHomeController with Store {
   PageStatus status = PageStatus.loading;
 
   @observable
+  PageStatus bestSellersStatus = PageStatus.loading;
+
+  @observable
   PageStatus productStatus = PageStatus.loading;
 
   @observable
@@ -33,7 +37,7 @@ abstract class BaseHomeController with Store {
   ObservableList<LabelResponse> selectedLabels = ObservableList.of([]);
 
   @observable
-  ObservableList<ProductGridResponse> mostPopular = ObservableList.of([]);
+  ObservableList<ProductGridResponse> bestSellers = ObservableList.of([]);
 
   @observable
   ObservableList<ProductGridResponse> products = ObservableList.of([]);
@@ -51,7 +55,7 @@ abstract class BaseHomeController with Store {
 
     await _loadCoupons();
     await _loadLabels();
-    await _loadMostPopular();
+    await _loadBestSellers();
     await _loadProducts();
 
     status = PageStatus.completed;
@@ -69,15 +73,10 @@ abstract class BaseHomeController with Store {
     labels.addAll(ls);
   }
 
-  Future<void> _loadMostPopular() async {
-    final getAllProductsCase = _injector.get<GetAllProductsCase>();
-    final ls = await getAllProductsCase();
-    mostPopular.addAll(ls);
-  }
-
   @action
   void onSearch(String? value) => _search(value);
   Future<void> _search(String? value) async {
+    await _loadBestSellers();
     await _loadProducts();
   }
 
@@ -91,7 +90,28 @@ abstract class BaseHomeController with Store {
       selectedLabels.add(label);
     }
 
+    await _loadBestSellers();
     await _loadProducts();
+  }
+
+  Future<void> _loadBestSellers() async {
+    List<int> categories = [];
+    if (selectedLabels.isNotEmpty) {
+      categories = selectedLabels.map((e) => e.labelId).toList();
+    }
+
+    final search = searchController.text.isEmpty ? '' : searchController.text;
+
+    bestSellersStatus = PageStatus.loading;
+    bestSellers.clear();
+
+    final getAllBestSellersProductsCase =
+        _injector.get<GetAllBestSellersProductsCase>();
+    final ls = await getAllBestSellersProductsCase(
+        categories: categories, search: search);
+    bestSellers.addAll(ls);
+
+    bestSellersStatus = PageStatus.completed;
   }
 
   Future<void> _loadProducts() async {

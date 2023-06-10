@@ -156,7 +156,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const Text(
-                    'Mais populares',
+                    'Mais vendidos',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -164,9 +164,10 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 4),
                   Observer(builder: (context) {
-                    final isLoading = controller.status == PageStatus.loading;
+                    final isLoading =
+                        controller.bestSellersStatus == PageStatus.loading;
                     List<ProductGridResponse> products =
-                        controller.mostPopular.toList();
+                        controller.bestSellers.toList();
                     if (isLoading) {
                       products.addAll([
                         ProductGridResponse(),

@@ -25,6 +25,22 @@ mixin _$HomeController on BaseHomeController, Store {
     });
   }
 
+  late final _$bestSellersStatusAtom =
+      Atom(name: 'BaseHomeController.bestSellersStatus', context: context);
+
+  @override
+  PageStatus get bestSellersStatus {
+    _$bestSellersStatusAtom.reportRead();
+    return super.bestSellersStatus;
+  }
+
+  @override
+  set bestSellersStatus(PageStatus value) {
+    _$bestSellersStatusAtom.reportWrite(value, super.bestSellersStatus, () {
+      super.bestSellersStatus = value;
+    });
+  }
+
   late final _$productStatusAtom =
       Atom(name: 'BaseHomeController.productStatus', context: context);
 
@@ -89,19 +105,19 @@ mixin _$HomeController on BaseHomeController, Store {
     });
   }
 
-  late final _$mostPopularAtom =
-      Atom(name: 'BaseHomeController.mostPopular', context: context);
+  late final _$bestSellersAtom =
+      Atom(name: 'BaseHomeController.bestSellers', context: context);
 
   @override
-  ObservableList<ProductGridResponse> get mostPopular {
-    _$mostPopularAtom.reportRead();
-    return super.mostPopular;
+  ObservableList<ProductGridResponse> get bestSellers {
+    _$bestSellersAtom.reportRead();
+    return super.bestSellers;
   }
 
   @override
-  set mostPopular(ObservableList<ProductGridResponse> value) {
-    _$mostPopularAtom.reportWrite(value, super.mostPopular, () {
-      super.mostPopular = value;
+  set bestSellers(ObservableList<ProductGridResponse> value) {
+    _$bestSellersAtom.reportWrite(value, super.bestSellers, () {
+      super.bestSellers = value;
     });
   }
 
@@ -161,11 +177,12 @@ mixin _$HomeController on BaseHomeController, Store {
   String toString() {
     return '''
 status: ${status},
+bestSellersStatus: ${bestSellersStatus},
 productStatus: ${productStatus},
 coupons: ${coupons},
 labels: ${labels},
 selectedLabels: ${selectedLabels},
-mostPopular: ${mostPopular},
+bestSellers: ${bestSellers},
 products: ${products}
     ''';
   }
