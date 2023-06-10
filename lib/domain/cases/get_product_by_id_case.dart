@@ -65,6 +65,7 @@ class GetProductByIdCaseImpl implements GetProductByIdCase {
       preparationTime: info.preparationTime,
       photos: photos,
       labels: labels,
+      favorite: info.favorite,
     );
 
     return product;

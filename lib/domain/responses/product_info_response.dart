@@ -13,6 +13,7 @@ class ProductInfoResponse {
   late String preparationTime;
   late List<Uint8List>? photos;
   late List<LabelResponse>? labels;
+  late bool favorite;
 
   late num price;
 
@@ -28,5 +29,6 @@ class ProductInfoResponse {
     this.preparationTime = '',
     this.photos,
     this.labels,
+    this.favorite = false,
   });
 }

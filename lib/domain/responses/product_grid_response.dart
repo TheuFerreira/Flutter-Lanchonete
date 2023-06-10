@@ -6,6 +6,7 @@ class ProductGridResponse {
   late String price;
   late num rating;
   late Uint8List? photo;
+  late bool favorite;
 
   ProductGridResponse({
     this.productId = 0,
@@ -13,5 +14,6 @@ class ProductGridResponse {
     this.price = '',
     this.rating = 0,
     this.photo,
+    this.favorite = false,
   });
 }

@@ -43,12 +43,16 @@ class CardProductWidget extends StatelessWidget {
                       right: 1,
                       top: 1,
                       child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.favorite_outline,
+                        onPressed: () {
+                          // TODO: Tap unfavorite | favorite
+                        },
+                        color: const Color.fromARGB(255, 235, 143, 5),
+                        icon: Icon(
+                          product.favorite
+                              ? Icons.favorite_outlined
+                              : Icons.favorite_outline,
                           size: 24,
                         ),
-                        color: const Color.fromARGB(255, 235, 143, 5),
                       ),
                     ),
                   ],

@@ -112,6 +112,7 @@ class _ProductPageState extends State<ProductPage> {
                       child: Padding(
                         padding: const EdgeInsets.only(right: 16.0, bottom: 4),
                         child: FavoriteButtonWidget(
+                          favorited: product.favorite,
                           onTap: () {
                             // TODO: Favorite | Unfavorite
                           },

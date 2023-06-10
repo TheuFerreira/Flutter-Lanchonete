@@ -42,6 +42,7 @@ class GetAllProductsCaseImpl implements GetAllProductsCase {
         price: priceStr,
         rating: e.rating,
         photo: photo,
+        favorite: e.favorite,
       );
     }).toList();
 

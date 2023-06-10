@@ -4,6 +4,7 @@ class ProductGridModel {
   final num rating;
   final num price;
   final String image;
+  final bool favorite;
 
   const ProductGridModel({
     required this.productId,
@@ -11,6 +12,7 @@ class ProductGridModel {
     required this.rating,
     required this.price,
     required this.image,
+    required this.favorite,
   });
 
   factory ProductGridModel.fromMap(Map<String, dynamic> map) {
@@ -20,6 +22,7 @@ class ProductGridModel {
       rating: map['rating'],
       price: map['price'],
       image: map['image'],
+      favorite: map['favorite'],
     );
   }
 }

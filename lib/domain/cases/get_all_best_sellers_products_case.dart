@@ -45,6 +45,7 @@ class GetAllBestSellersProductsCaseImpl
         price: priceStr,
         rating: e.rating,
         photo: photo,
+        favorite: e.favorite,
       );
     }).toList();
 

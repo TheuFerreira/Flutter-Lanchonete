@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 class FavoriteButtonWidget extends StatelessWidget {
+  final bool favorited;
   final void Function() onTap;
   const FavoriteButtonWidget({
     super.key,
+    required this.favorited,
     required this.onTap,
   });
 
@@ -26,10 +28,10 @@ class FavoriteButtonWidget extends StatelessWidget {
             ),
           ],
         ),
-        child: const Icon(
-          Icons.favorite_border,
+        child: Icon(
+          favorited ? Icons.favorite_outlined : Icons.favorite_border,
           size: 26,
-          color: Color.fromARGB(255, 235, 143, 5),
+          color: const Color.fromARGB(255, 235, 143, 5),
         ),
       ),
     );

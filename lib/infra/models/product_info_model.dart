@@ -12,6 +12,7 @@ class ProductInfoModel {
   final String preparationTime;
   late List<LabelInfoModel>? labels;
   late List<String>? images;
+  late bool favorite;
 
   ProductInfoModel({
     required this.productId,
@@ -25,6 +26,7 @@ class ProductInfoModel {
     required this.preparationTime,
     this.labels,
     this.images,
+    this.favorite = false,
   });
 
   factory ProductInfoModel.fromMap(Map<String, dynamic> map) {
@@ -38,6 +40,7 @@ class ProductInfoModel {
       calories: map['calories'],
       tax: map['tax'],
       preparationTime: map['preparation_time'],
+      favorite: map['favorite'],
     );
   }
 }
