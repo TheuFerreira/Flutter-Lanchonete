@@ -5,12 +5,14 @@ class BadgeIconWidget extends StatelessWidget {
   final Color badgeColor;
   final Icon iconData;
   final void Function() onTap;
+  final double top;
   const BadgeIconWidget({
     super.key,
     this.value,
     this.badgeColor = Colors.green,
     required this.iconData,
     required this.onTap,
+    this.top = 6,
   });
 
   @override
@@ -27,7 +29,7 @@ class BadgeIconWidget extends StatelessWidget {
         else
           Positioned(
             right: 6,
-            top: 6,
+            top: top,
             child: Stack(
               alignment: Alignment.center,
               children: [

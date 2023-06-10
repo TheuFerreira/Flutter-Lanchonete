@@ -12,6 +12,7 @@ import 'package:lanchonete_app/presenters/pages/product/widgets/rating_full_widg
 import 'package:lanchonete_app/presenters/pages/product/widgets/shimmer_widget.dart';
 import 'package:lanchonete_app/presenters/pages/product/widgets/total_price_widget.dart';
 import 'package:lanchonete_app/presenters/utils/page_status.dart';
+import 'package:lanchonete_app/presenters/widgets/badge_icon_widget.dart';
 
 class ProductPage extends StatefulWidget {
   final ProductGridResponse product;
@@ -42,11 +43,17 @@ class _ProductPageState extends State<ProductPage> {
         elevation: 0,
         toolbarHeight: 40,
         backgroundColor: Colors.white,
-        foregroundColor: const Color.fromARGB(255, 235, 143, 5),
+        foregroundColor: Colors.black,
         actions: [
-          IconButton(
-            icon: const Icon(Icons.shopping_cart_outlined),
-            onPressed: () {
+          BadgeIconWidget(
+            value: '1',
+            top: 0,
+            badgeColor: const Color.fromARGB(255, 235, 143, 5),
+            iconData: const Icon(
+              Icons.shopping_cart_outlined,
+              color: Colors.black,
+            ),
+            onTap: () {
               // TODO: Cart
             },
           ),
