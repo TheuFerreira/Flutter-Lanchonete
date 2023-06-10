@@ -38,4 +38,18 @@ class ProductServiceImpl implements ProductService {
     final models = rows.map((e) => ProductGridModel.fromMap(e)).toList();
     return models;
   }
+
+  @override
+  Future<List<ProductGridModel>> getAllBestSellersByCategories(
+      Object parameters) async {
+    final json = jsonEncode(parameters);
+
+    final data = await fetch.post(
+      route: '/Product/AllBestSellersByCategories',
+      params: json,
+    );
+    final rows = data as List<dynamic>;
+    final models = rows.map((e) => ProductGridModel.fromMap(e)).toList();
+    return models;
+  }
 }
