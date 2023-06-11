@@ -52,4 +52,15 @@ class ProductServiceImpl implements ProductService {
     final models = rows.map((e) => ProductGridModel.fromMap(e)).toList();
     return models;
   }
+
+  @override
+  Future<bool> updateFavorite(int productId) async {
+    final params = {"product_id": productId};
+
+    final result = await fetch.put(
+      route: '/Product/Favorite',
+      params: params,
+    );
+    return result;
+  }
 }
