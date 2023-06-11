@@ -141,17 +141,6 @@ mixin _$HomeController on BaseHomeController, Store {
       ActionController(name: 'BaseHomeController', context: context);
 
   @override
-  void load() {
-    final _$actionInfo = _$BaseHomeControllerActionController.startAction(
-        name: 'BaseHomeController.load');
-    try {
-      return super.load();
-    } finally {
-      _$BaseHomeControllerActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void onSearch(String? value) {
     final _$actionInfo = _$BaseHomeControllerActionController.startAction(
         name: 'BaseHomeController.onSearch');

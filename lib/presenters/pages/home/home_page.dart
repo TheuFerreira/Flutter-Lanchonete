@@ -58,192 +58,198 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        controller: scrollController,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Observer(builder: (context) {
-              final isLoading = controller.status == PageStatus.loading;
-              final coupons = controller.coupons;
-              return ShimmerWidget(
-                isLoading: isLoading,
-                height: 120,
-                child: SingleChildScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      const SizedBox(width: 10),
-                      ...coupons.map(
-                        (e) => CardCouponWidget(
-                          coupon: e,
-                          onTap: (_) {
-                            // TODO: Coupon
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                    ],
-                  ),
-                ),
-              );
-            }),
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: SearchWidget(
-                      controller: controller.searchController,
-                      onChanged: controller.onSearch,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  InkWell(
-                    onTap: () {},
-                    borderRadius: BorderRadius.circular(20),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 235, 143, 5),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: const Icon(
-                        Icons.filter_list,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Observer(builder: (context) {
-              final labels = controller.labels;
-              final isLoading = controller.status == PageStatus.loading;
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 16),
-                child: ShimmerWidget(
+      body: RefreshIndicator(
+        onRefresh: () async => await controller.load(),
+        color: const Color.fromARGB(255, 235, 143, 5),
+        child: SingleChildScrollView(
+          controller: scrollController,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Observer(builder: (context) {
+                final isLoading = controller.status == PageStatus.loading;
+                final coupons = controller.coupons;
+                return ShimmerWidget(
                   isLoading: isLoading,
-                  height: 30,
-                  width: double.infinity,
+                  height: 120,
                   child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        const SizedBox(width: 16),
-                        ...labels.map(
-                          (e) {
-                            final hasMargin =
-                                labels.indexOf(e) < labels.length - 1;
-                            final selectedLabels = controller.selectedLabels;
-                            final isSelected = selectedLabels.contains(e);
-                            return LabelWidget(
-                              label: e,
-                              hasMargin: hasMargin,
-                              selectedBackgrounColor:
-                                  const Color.fromARGB(255, 235, 143, 5),
-                              selectedTextColor: Colors.white,
-                              isSelected: isSelected,
-                              onTap: controller.tapLabel,
-                            );
-                          },
+                        const SizedBox(width: 10),
+                        ...coupons.map(
+                          (e) => CardCouponWidget(
+                            coupon: e,
+                            onTap: (_) {
+                              // TODO: Coupon
+                            },
+                          ),
                         ),
-                        const SizedBox(width: 16),
+                        const SizedBox(width: 10),
                       ],
                     ),
                   ),
+                );
+              }),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: SearchWidget(
+                        controller: controller.searchController,
+                        onChanged: controller.onSearch,
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    InkWell(
+                      onTap: () {
+                        // TODO: Search Options
+                      },
+                      borderRadius: BorderRadius.circular(20),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 235, 143, 5),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: const Icon(
+                          Icons.filter_list,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              );
-            }),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  const Text(
-                    'Mais vendidos',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Observer(builder: (context) {
-                    final isLoading =
-                        controller.bestSellersStatus == PageStatus.loading;
-                    final products = controller.bestSellers.toList();
-                    if (isLoading) {
-                      products.addAll([
-                        ProductGrid(),
-                        ProductGrid(),
-                      ]);
-                    }
-                    return GridView.count(
-                      controller: scrollController,
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 16,
-                      mainAxisSpacing: 16,
-                      shrinkWrap: true,
-                      children: products
-                          .map(
-                            (e) => CardProductWidget(
-                              product: e,
-                              isLoading: isLoading,
-                              onTap: (product) =>
-                                  controller.onTapProduct(context, product),
-                              onTapFavorite: controller.onTapFavorite,
-                            ),
-                          )
-                          .toList(),
-                    );
-                  }),
-                  const SizedBox(height: 12),
-                  const Text(
-                    'Produtos',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Observer(builder: (context) {
-                    final isLoading =
-                        controller.productStatus == PageStatus.loading;
-                    final products = controller.products.toList();
-                    if (isLoading) {
-                      products.addAll([
-                        ProductGrid(),
-                        ProductGrid(),
-                      ]);
-                    }
-                    return GridView.count(
-                      controller: scrollController,
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 16,
-                      padding: const EdgeInsets.only(bottom: 16),
-                      mainAxisSpacing: 16,
-                      shrinkWrap: true,
-                      children: products
-                          .map(
-                            (e) => CardProductWidget(
-                              product: e,
-                              isLoading: isLoading,
-                              onTap: (product) =>
-                                  controller.onTapProduct(context, product),
-                              onTapFavorite: controller.onTapFavorite,
-                            ),
-                          )
-                          .toList(),
-                    );
-                  }),
-                ],
               ),
-            ),
-          ],
+              Observer(builder: (context) {
+                final labels = controller.labels;
+                final isLoading = controller.status == PageStatus.loading;
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: ShimmerWidget(
+                    isLoading: isLoading,
+                    height: 30,
+                    width: double.infinity,
+                    child: SingleChildScrollView(
+                      physics: const BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          const SizedBox(width: 16),
+                          ...labels.map(
+                            (e) {
+                              final hasMargin =
+                                  labels.indexOf(e) < labels.length - 1;
+                              final selectedLabels = controller.selectedLabels;
+                              final isSelected = selectedLabels.contains(e);
+                              return LabelWidget(
+                                label: e,
+                                hasMargin: hasMargin,
+                                selectedBackgrounColor:
+                                    const Color.fromARGB(255, 235, 143, 5),
+                                selectedTextColor: Colors.white,
+                                isSelected: isSelected,
+                                onTap: controller.tapLabel,
+                              );
+                            },
+                          ),
+                          const SizedBox(width: 16),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              }),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Text(
+                      'Mais vendidos',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Observer(builder: (context) {
+                      final isLoading =
+                          controller.bestSellersStatus == PageStatus.loading;
+                      final products = controller.bestSellers.toList();
+                      if (isLoading) {
+                        products.addAll([
+                          ProductGrid(),
+                          ProductGrid(),
+                        ]);
+                      }
+                      return GridView.count(
+                        controller: scrollController,
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 16,
+                        mainAxisSpacing: 16,
+                        shrinkWrap: true,
+                        children: products
+                            .map(
+                              (e) => CardProductWidget(
+                                product: e,
+                                isLoading: isLoading,
+                                onTap: (product) =>
+                                    controller.onTapProduct(context, product),
+                                onTapFavorite: controller.onTapFavorite,
+                              ),
+                            )
+                            .toList(),
+                      );
+                    }),
+                    const SizedBox(height: 12),
+                    const Text(
+                      'Produtos',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Observer(builder: (context) {
+                      final isLoading =
+                          controller.productStatus == PageStatus.loading;
+                      final products = controller.products.toList();
+                      if (isLoading) {
+                        products.addAll([
+                          ProductGrid(),
+                          ProductGrid(),
+                        ]);
+                      }
+                      return GridView.count(
+                        controller: scrollController,
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 16,
+                        padding: const EdgeInsets.only(bottom: 16),
+                        mainAxisSpacing: 16,
+                        shrinkWrap: true,
+                        children: products
+                            .map(
+                              (e) => CardProductWidget(
+                                product: e,
+                                isLoading: isLoading,
+                                onTap: (product) =>
+                                    controller.onTapProduct(context, product),
+                                onTapFavorite: controller.onTapFavorite,
+                              ),
+                            )
+                            .toList(),
+                      );
+                    }),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

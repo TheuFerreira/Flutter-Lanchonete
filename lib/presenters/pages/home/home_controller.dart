@@ -49,9 +49,7 @@ abstract class BaseHomeController with Store {
     load();
   }
 
-  @action
-  void load() => _load();
-  void _load() async {
+  Future<void> load() async {
     status = PageStatus.loading;
 
     await _loadCoupons();
