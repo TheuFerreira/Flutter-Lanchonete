@@ -83,6 +83,43 @@ class Fetch {
     }
   }
 
+  Future<dynamic> put({
+    required String route,
+    Object? params,
+  }) async {
+    try {
+      final response = await _dio.put(route, data: params);
+      final status = response.statusCode;
+      if (status == 204) {
+        return null;
+      }
+
+      final data = response.data;
+      return data;
+    } on DioError catch (ex) {
+      switch (ex.type) {
+        case DioErrorType.connectionTimeout:
+          throw FetchTimeoutException();
+        case DioErrorType.sendTimeout:
+          throw FetchTimeoutException();
+        case DioErrorType.receiveTimeout:
+          throw FetchTimeoutException();
+        case DioErrorType.badCertificate:
+          throw FetchUnknownException();
+        case DioErrorType.badResponse:
+          _badResponse(ex.response);
+
+          throw FetchUnknownException();
+        case DioErrorType.cancel:
+          throw FetchUnknownException();
+        case DioErrorType.connectionError:
+          throw FetchUnknownException();
+        case DioErrorType.unknown:
+          throw FetchUnknownException();
+      }
+    }
+  }
+
   void _badResponse(Response<dynamic>? response) {
     if (response == null) {
       throw FetchUnknownException();
