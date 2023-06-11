@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:lanchonete_app/domain/responses/product_grid_response.dart';
 import 'package:lanchonete_app/presenters/pages/home/home_controller.dart';
+import 'package:lanchonete_app/presenters/pages/home/product_grid.dart';
 import 'package:lanchonete_app/presenters/pages/home/widgets/card_coupon_widget.dart';
 import 'package:lanchonete_app/presenters/pages/home/widgets/card_product_widget.dart';
 import 'package:lanchonete_app/presenters/pages/home/widgets/search_widget.dart';
@@ -175,12 +175,11 @@ class _HomePageState extends State<HomePage> {
                   Observer(builder: (context) {
                     final isLoading =
                         controller.bestSellersStatus == PageStatus.loading;
-                    List<ProductGridResponse> products =
-                        controller.bestSellers.toList();
+                    final products = controller.bestSellers.toList();
                     if (isLoading) {
                       products.addAll([
-                        ProductGridResponse(),
-                        ProductGridResponse(),
+                        ProductGrid(),
+                        ProductGrid(),
                       ]);
                     }
                     return GridView.count(
@@ -196,6 +195,7 @@ class _HomePageState extends State<HomePage> {
                               isLoading: isLoading,
                               onTap: (product) =>
                                   controller.onTapProduct(context, product),
+                              onTapFavorite: controller.onTapFavorite,
                             ),
                           )
                           .toList(),
@@ -213,12 +213,11 @@ class _HomePageState extends State<HomePage> {
                   Observer(builder: (context) {
                     final isLoading =
                         controller.productStatus == PageStatus.loading;
-                    List<ProductGridResponse> products =
-                        controller.products.toList();
+                    final products = controller.products.toList();
                     if (isLoading) {
                       products.addAll([
-                        ProductGridResponse(),
-                        ProductGridResponse(),
+                        ProductGrid(),
+                        ProductGrid(),
                       ]);
                     }
                     return GridView.count(
@@ -235,6 +234,7 @@ class _HomePageState extends State<HomePage> {
                               isLoading: isLoading,
                               onTap: (product) =>
                                   controller.onTapProduct(context, product),
+                              onTapFavorite: controller.onTapFavorite,
                             ),
                           )
                           .toList(),

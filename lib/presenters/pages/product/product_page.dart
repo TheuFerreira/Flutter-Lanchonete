@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:lanchonete_app/domain/responses/product_grid_response.dart';
+import 'package:lanchonete_app/presenters/pages/home/product_grid.dart';
 import 'package:lanchonete_app/presenters/pages/product/product_controller.dart';
 import 'package:lanchonete_app/presenters/pages/product/widgets/add_to_cart_widget.dart';
 import 'package:lanchonete_app/presenters/pages/product/widgets/carousell_image_widget.dart';
@@ -15,7 +15,7 @@ import 'package:lanchonete_app/presenters/utils/page_status.dart';
 import 'package:lanchonete_app/presenters/widgets/badge_icon_widget.dart';
 
 class ProductPage extends StatefulWidget {
-  final ProductGridResponse product;
+  final ProductGrid product;
   const ProductPage({
     super.key,
     required this.product,

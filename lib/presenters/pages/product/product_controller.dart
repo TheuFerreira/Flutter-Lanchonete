@@ -3,9 +3,9 @@ import 'package:injector/injector.dart';
 import 'package:lanchonete_app/domain/cases/get_product_by_id_case.dart';
 import 'package:lanchonete_app/domain/cases/update_favorite_of_product_case.dart';
 import 'package:lanchonete_app/domain/errors/product_exception.dart';
-import 'package:lanchonete_app/domain/responses/product_grid_response.dart';
 import 'package:lanchonete_app/domain/responses/product_info_response.dart';
 import 'package:lanchonete_app/domain/services/number_service.dart';
+import 'package:lanchonete_app/presenters/pages/home/product_grid.dart';
 import 'package:lanchonete_app/presenters/utils/page_status.dart';
 import 'package:mobx/mobx.dart';
 
@@ -35,7 +35,7 @@ abstract class BaseProductController with Store {
   final _injector = Injector.appInstance;
   late int _productId;
 
-  BaseProductController(ProductGridResponse product) {
+  BaseProductController(ProductGrid product) {
     load(product.productId);
     _productId = product.productId;
   }

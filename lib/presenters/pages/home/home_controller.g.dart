@@ -109,13 +109,13 @@ mixin _$HomeController on BaseHomeController, Store {
       Atom(name: 'BaseHomeController.bestSellers', context: context);
 
   @override
-  ObservableList<ProductGridResponse> get bestSellers {
+  ObservableList<ProductGrid> get bestSellers {
     _$bestSellersAtom.reportRead();
     return super.bestSellers;
   }
 
   @override
-  set bestSellers(ObservableList<ProductGridResponse> value) {
+  set bestSellers(ObservableList<ProductGrid> value) {
     _$bestSellersAtom.reportWrite(value, super.bestSellers, () {
       super.bestSellers = value;
     });
@@ -125,13 +125,13 @@ mixin _$HomeController on BaseHomeController, Store {
       Atom(name: 'BaseHomeController.products', context: context);
 
   @override
-  ObservableList<ProductGridResponse> get products {
+  ObservableList<ProductGrid> get products {
     _$productsAtom.reportRead();
     return super.products;
   }
 
   @override
-  set products(ObservableList<ProductGridResponse> value) {
+  set products(ObservableList<ProductGrid> value) {
     _$productsAtom.reportWrite(value, super.products, () {
       super.products = value;
     });
@@ -168,6 +168,17 @@ mixin _$HomeController on BaseHomeController, Store {
         name: 'BaseHomeController.tapLabel');
     try {
       return super.tapLabel(label);
+    } finally {
+      _$BaseHomeControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void onTapFavorite(ProductGrid product) {
+    final _$actionInfo = _$BaseHomeControllerActionController.startAction(
+        name: 'BaseHomeController.onTapFavorite');
+    try {
+      return super.onTapFavorite(product);
     } finally {
       _$BaseHomeControllerActionController.endAction(_$actionInfo);
     }

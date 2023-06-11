@@ -4,9 +4,10 @@ import 'package:lanchonete_app/domain/cases/get_all_best_sellers_products_case.d
 import 'package:lanchonete_app/domain/cases/get_all_coupons_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_labels_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_products_case.dart';
+import 'package:lanchonete_app/domain/cases/update_favorite_of_product_case.dart';
 import 'package:lanchonete_app/domain/responses/coupon_response.dart';
 import 'package:lanchonete_app/domain/responses/label_response.dart';
-import 'package:lanchonete_app/domain/responses/product_grid_response.dart';
+import 'package:lanchonete_app/presenters/pages/home/product_grid.dart';
 import 'package:lanchonete_app/presenters/pages/product/product_page.dart';
 import 'package:lanchonete_app/presenters/utils/page_status.dart';
 import 'package:mobx/mobx.dart';
@@ -37,10 +38,10 @@ abstract class BaseHomeController with Store {
   ObservableList<LabelResponse> selectedLabels = ObservableList.of([]);
 
   @observable
-  ObservableList<ProductGridResponse> bestSellers = ObservableList.of([]);
+  ObservableList<ProductGrid> bestSellers = ObservableList.of([]);
 
   @observable
-  ObservableList<ProductGridResponse> products = ObservableList.of([]);
+  ObservableList<ProductGrid> products = ObservableList.of([]);
 
   final _injector = Injector.appInstance;
 
@@ -109,7 +110,7 @@ abstract class BaseHomeController with Store {
         _injector.get<GetAllBestSellersProductsCase>();
     final ls = await getAllBestSellersProductsCase(
         categories: categories, search: search);
-    bestSellers.addAll(ls);
+    bestSellers.addAll(ls.map((e) => ProductGrid.factory(e)));
 
     bestSellersStatus = PageStatus.completed;
   }
@@ -127,16 +128,33 @@ abstract class BaseHomeController with Store {
 
     final getAllProductsCase = _injector.get<GetAllProductsCase>();
     final ls = await getAllProductsCase(categories: categories, search: search);
-    products.addAll(ls);
+    products.addAll(ls.map((e) => ProductGrid.factory(e)));
 
     productStatus = PageStatus.completed;
   }
 
-  void onTapProduct(BuildContext context, ProductGridResponse product) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (builder) => ProductPage(product: product),
-      ),
-    );
+  void onTapProduct(BuildContext context, ProductGrid product) {
+    Navigator.of(context)
+        .push(
+          MaterialPageRoute(
+            builder: (builder) => ProductPage(product: product),
+          ),
+        )
+        .then((_) => load());
+  }
+
+  @action
+  void onTapFavorite(ProductGrid product) => _onTapFavorite(product);
+  Future<void> _onTapFavorite(ProductGrid product) async {
+    final updateFavoriteOfProductCase =
+        _injector.get<UpdateFavoriteOfProductCase>();
+
+    final newValue = await updateFavoriteOfProductCase(product.productId);
+
+    final indexBestSeller = bestSellers.indexOf(product);
+    bestSellers[indexBestSeller].favorite = newValue;
+
+    final indexProduct = products.indexOf(product);
+    products[indexProduct].favorite = newValue;
   }
 }

@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:lanchonete_app/domain/responses/product_grid_response.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:lanchonete_app/presenters/pages/home/product_grid.dart';
 import 'package:lanchonete_app/presenters/pages/product/widgets/shimmer_widget.dart';
 
 class CardProductWidget extends StatelessWidget {
   final bool isLoading;
-  final ProductGridResponse product;
-  final Function(ProductGridResponse product) onTap;
+  final ProductGrid product;
+  final Function(ProductGrid product) onTap;
+  final Function(ProductGrid product) onTapFavorite;
   const CardProductWidget({
     super.key,
     required this.product,
     required this.isLoading,
     required this.onTap,
+    required this.onTapFavorite,
   });
 
   @override
@@ -42,17 +45,19 @@ class CardProductWidget extends StatelessWidget {
                     Positioned(
                       right: 1,
                       top: 1,
-                      child: IconButton(
-                        onPressed: () {
-                          // TODO: Tap unfavorite | favorite
+                      child: Observer(
+                        builder: (context) {
+                          return IconButton(
+                            onPressed: () => onTapFavorite(product),
+                            color: const Color.fromARGB(255, 235, 143, 5),
+                            icon: Icon(
+                              product.favorite
+                                  ? Icons.favorite_outlined
+                                  : Icons.favorite_outline,
+                              size: 24,
+                            ),
+                          );
                         },
-                        color: const Color.fromARGB(255, 235, 143, 5),
-                        icon: Icon(
-                          product.favorite
-                              ? Icons.favorite_outlined
-                              : Icons.favorite_outline,
-                          size: 24,
-                        ),
                       ),
                     ),
                   ],
