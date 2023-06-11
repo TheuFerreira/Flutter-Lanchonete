@@ -8,6 +8,7 @@ import 'package:lanchonete_app/domain/cases/get_all_coupons_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_labels_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_products_case.dart';
 import 'package:lanchonete_app/domain/cases/get_product_by_id_case.dart';
+import 'package:lanchonete_app/domain/cases/update_favorite_of_product_case.dart';
 import 'package:lanchonete_app/domain/services/coupon_service.dart';
 import 'package:lanchonete_app/domain/services/label_service.dart';
 import 'package:lanchonete_app/domain/services/number_service.dart';
@@ -73,6 +74,11 @@ void main() async {
     final productService = injector.get<ProductService>();
     final numberService = injector.get<NumberService>();
     return GetAllBestSellersProductsCaseImpl(productService, numberService);
+  });
+
+  injector.registerDependency<UpdateFavoriteOfProductCase>(() {
+    final productService = injector.get<ProductService>();
+    return UpdateFavoriteOfProductCaseImpl(productService);
   });
 
   runApp(const AppWidget());
