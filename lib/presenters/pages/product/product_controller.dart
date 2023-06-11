@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 import 'package:lanchonete_app/domain/cases/get_product_by_id_case.dart';
+import 'package:lanchonete_app/domain/cases/update_favorite_of_product_case.dart';
 import 'package:lanchonete_app/domain/errors/product_exception.dart';
 import 'package:lanchonete_app/domain/responses/product_grid_response.dart';
 import 'package:lanchonete_app/domain/responses/product_info_response.dart';
@@ -20,6 +21,9 @@ abstract class BaseProductController with Store {
   PageStatus status = PageStatus.loading;
 
   @observable
+  bool favorite = false;
+
+  @observable
   int quantity = 1;
 
   @observable
@@ -29,9 +33,11 @@ abstract class BaseProductController with Store {
   int selectedPhoto = 0;
 
   final _injector = Injector.appInstance;
+  late int _productId;
 
   BaseProductController(ProductGridResponse product) {
     load(product.productId);
+    _productId = product.productId;
   }
 
   @action
@@ -42,6 +48,7 @@ abstract class BaseProductController with Store {
     try {
       final getProductByIdCase = _injector.get<GetProductByIdCase>();
       product = await getProductByIdCase(productId);
+      favorite = product.favorite;
 
       _calculateTotalPrice();
       status = PageStatus.completed;
@@ -57,6 +64,15 @@ abstract class BaseProductController with Store {
   @action
   updateSelectedPhoto(int index) {
     selectedPhoto = index;
+  }
+
+  @action
+  updateFavorite() => _updateFavorite();
+  _updateFavorite() async {
+    final updateFavoriteOfProductCase =
+        _injector.get<UpdateFavoriteOfProductCase>();
+    final newValue = await updateFavoriteOfProductCase(_productId);
+    favorite = newValue;
   }
 
   @action

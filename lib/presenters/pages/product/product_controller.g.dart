@@ -41,6 +41,22 @@ mixin _$ProductController on BaseProductController, Store {
     });
   }
 
+  late final _$favoriteAtom =
+      Atom(name: 'BaseProductController.favorite', context: context);
+
+  @override
+  bool get favorite {
+    _$favoriteAtom.reportRead();
+    return super.favorite;
+  }
+
+  @override
+  set favorite(bool value) {
+    _$favoriteAtom.reportWrite(value, super.favorite, () {
+      super.favorite = value;
+    });
+  }
+
   late final _$quantityAtom =
       Atom(name: 'BaseProductController.quantity', context: context);
 
@@ -115,6 +131,17 @@ mixin _$ProductController on BaseProductController, Store {
   }
 
   @override
+  dynamic updateFavorite() {
+    final _$actionInfo = _$BaseProductControllerActionController.startAction(
+        name: 'BaseProductController.updateFavorite');
+    try {
+      return super.updateFavorite();
+    } finally {
+      _$BaseProductControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   dynamic changeQuantity(int newQuantity) {
     final _$actionInfo = _$BaseProductControllerActionController.startAction(
         name: 'BaseProductController.changeQuantity');
@@ -130,6 +157,7 @@ mixin _$ProductController on BaseProductController, Store {
     return '''
 product: ${product},
 status: ${status},
+favorite: ${favorite},
 quantity: ${quantity},
 totalPriceStr: ${totalPriceStr},
 selectedPhoto: ${selectedPhoto}
