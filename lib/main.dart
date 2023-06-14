@@ -12,10 +12,12 @@ import 'package:lanchonete_app/domain/cases/get_favorites_count_case.dart';
 import 'package:lanchonete_app/domain/cases/get_product_by_id_case.dart';
 import 'package:lanchonete_app/domain/cases/update_favorite_of_product_case.dart';
 import 'package:lanchonete_app/domain/services/coupon_service.dart';
+import 'package:lanchonete_app/domain/services/favorite_service.dart';
 import 'package:lanchonete_app/domain/services/label_service.dart';
 import 'package:lanchonete_app/domain/services/number_service.dart';
 import 'package:lanchonete_app/domain/services/product_service.dart';
 import 'package:lanchonete_app/infra/services/coupon_service_impl.dart';
+import 'package:lanchonete_app/infra/services/favorite_service_impl.dart';
 import 'package:lanchonete_app/infra/services/label_service_impl.dart';
 import 'package:lanchonete_app/infra/services/number_service_impl.dart';
 import 'package:lanchonete_app/infra/services/product_service_impl.dart';
@@ -50,6 +52,11 @@ void main() async {
     return CouponServiceImpl(fetch: fetch);
   });
 
+  injector.registerDependency<FavoriteService>(() {
+    final fetch = injector.get<Fetch>();
+    return FavoriteServiceImpl(fetch: fetch);
+  });
+
   injector.registerDependency<GetProductByIdCase>(() {
     final numberService = injector.get<NumberService>();
     final productService = injector.get<ProductService>();
@@ -79,21 +86,21 @@ void main() async {
   });
 
   injector.registerDependency<UpdateFavoriteOfProductCase>(() {
-    final productService = injector.get<ProductService>();
-    return UpdateFavoriteOfProductCaseImpl(productService);
+    final favoriteService = injector.get<FavoriteService>();
+    return UpdateFavoriteOfProductCaseImpl(favoriteService);
   });
 
   injector.registerDependency<GetFavoritedProductsCase>(() {
-    final productService = injector.get<ProductService>();
+    final favoriteService = injector.get<FavoriteService>();
     final numberService = injector.get<NumberService>();
 
-    return GetFavoritedProductsCaseImpl(productService, numberService);
+    return GetFavoritedProductsCaseImpl(favoriteService, numberService);
   });
 
   injector.registerDependency<GetFavoritesCountCase>(() {
-    final productService = injector.get<ProductService>();
+    final favoriteService = injector.get<FavoriteService>();
 
-    return GetFavoritesCountCaseImpl(productService);
+    return GetFavoritesCountCaseImpl(favoriteService);
   });
 
   runApp(const AppWidget());

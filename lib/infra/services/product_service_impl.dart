@@ -52,36 +52,4 @@ class ProductServiceImpl implements ProductService {
     final models = rows.map((e) => ProductGridModel.fromMap(e)).toList();
     return models;
   }
-
-  @override
-  Future<bool> updateFavorite(int productId) async {
-    final params = {"product_id": productId};
-
-    final result = await fetch.put(
-      route: '/Product/Favorite',
-      params: params,
-    );
-    return result;
-  }
-
-  @override
-  Future<List<ProductGridModel>> searchFavorites(Object parameters) async {
-    final json = jsonEncode(parameters);
-
-    final data = await fetch.post(
-      route: '/Product/SearchFavorites',
-      params: json,
-    );
-    final rows = data as List<dynamic>;
-    final models = rows.map((e) => ProductGridModel.fromMap(e)).toList();
-    return models;
-  }
-
-  @override
-  Future<int> countFavorites() async {
-    final data = await fetch.get(
-      route: '/Product/CountFavorites',
-    );
-    return data;
-  }
 }
