@@ -7,6 +7,7 @@ import 'package:lanchonete_app/domain/cases/get_all_products_case.dart';
 import 'package:lanchonete_app/domain/cases/update_favorite_of_product_case.dart';
 import 'package:lanchonete_app/domain/responses/coupon_response.dart';
 import 'package:lanchonete_app/domain/responses/label_response.dart';
+import 'package:lanchonete_app/presenters/pages/favorite/favorite_page.dart';
 import 'package:lanchonete_app/presenters/pages/home/product_grid.dart';
 import 'package:lanchonete_app/presenters/pages/product/product_page.dart';
 import 'package:lanchonete_app/presenters/utils/page_status.dart';
@@ -70,6 +71,14 @@ abstract class BaseHomeController with Store {
     final getAllLabelsCase = _injector.get<GetAllLabelsCase>();
     final ls = await getAllLabelsCase();
     labels.addAll(ls);
+  }
+
+  void toFavoritePage(BuildContext context) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(
+          builder: (builder) => const FavoritePage(),
+        ))
+        .then((value) => load());
   }
 
   @action

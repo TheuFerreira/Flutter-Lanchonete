@@ -7,4 +7,5 @@ abstract class ProductService {
   Future<List<ProductGridModel>> getAllBestSellersByCategories(
       Object parameters);
   Future<bool> updateFavorite(int productId);
+  Future<List<ProductGridModel>> searchFavorites(Object parameters);
 }

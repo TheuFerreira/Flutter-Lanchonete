@@ -3,8 +3,8 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:lanchonete_app/presenters/pages/home/home_controller.dart';
 import 'package:lanchonete_app/presenters/pages/home/product_grid.dart';
 import 'package:lanchonete_app/presenters/pages/home/widgets/card_coupon_widget.dart';
-import 'package:lanchonete_app/presenters/pages/home/widgets/card_product_widget.dart';
-import 'package:lanchonete_app/presenters/pages/home/widgets/search_widget.dart';
+import 'package:lanchonete_app/presenters/widgets/card_product_widget.dart';
+import 'package:lanchonete_app/presenters/widgets/search_widget.dart';
 import 'package:lanchonete_app/presenters/pages/product/widgets/shimmer_widget.dart';
 import 'package:lanchonete_app/presenters/utils/page_status.dart';
 import 'package:lanchonete_app/presenters/widgets/badge_icon_widget.dart';
@@ -26,31 +26,23 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
         elevation: 0,
-        title: const Text(
-          'Home',
-          style: TextStyle(
-            color: Colors.black,
-          ),
-        ),
+        title: const Text('Início'),
         actions: [
           BadgeIconWidget(
             value: '1',
             badgeColor: const Color.fromARGB(255, 235, 143, 5),
             iconData: const Icon(
               Icons.favorite_outline,
-              color: Colors.black,
             ),
-            onTap: () {
-              // TODO: Favorites
-            },
+            onTap: () => controller.toFavoritePage(context),
           ),
           BadgeIconWidget(
             value: '1',
             badgeColor: const Color.fromARGB(255, 235, 143, 5),
             iconData: const Icon(
               Icons.shopping_cart_outlined,
-              color: Colors.black,
             ),
             onTap: () {
               // TODO: Cart
