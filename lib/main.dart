@@ -10,12 +10,15 @@ import 'package:lanchonete_app/domain/cases/get_all_products_case.dart';
 import 'package:lanchonete_app/domain/cases/get_favorited_products_case.dart';
 import 'package:lanchonete_app/domain/cases/get_favorites_count_case.dart';
 import 'package:lanchonete_app/domain/cases/get_product_by_id_case.dart';
+import 'package:lanchonete_app/domain/cases/save_product_to_cart_case.dart';
 import 'package:lanchonete_app/domain/cases/update_favorite_of_product_case.dart';
+import 'package:lanchonete_app/domain/services/cart_product_service.dart';
 import 'package:lanchonete_app/domain/services/coupon_service.dart';
 import 'package:lanchonete_app/domain/services/favorite_service.dart';
 import 'package:lanchonete_app/domain/services/label_service.dart';
 import 'package:lanchonete_app/domain/services/number_service.dart';
 import 'package:lanchonete_app/domain/services/product_service.dart';
+import 'package:lanchonete_app/infra/services/cart_product_service_impl.dart';
 import 'package:lanchonete_app/infra/services/coupon_service_impl.dart';
 import 'package:lanchonete_app/infra/services/favorite_service_impl.dart';
 import 'package:lanchonete_app/infra/services/label_service_impl.dart';
@@ -55,6 +58,11 @@ void main() async {
   injector.registerDependency<FavoriteService>(() {
     final fetch = injector.get<Fetch>();
     return FavoriteServiceImpl(fetch: fetch);
+  });
+
+  injector.registerDependency<CartProductService>(() {
+    final fetch = injector.get<Fetch>();
+    return CartProductServiceImpl(fetch: fetch);
   });
 
   injector.registerDependency<GetProductByIdCase>(() {
@@ -101,6 +109,11 @@ void main() async {
     final favoriteService = injector.get<FavoriteService>();
 
     return GetFavoritesCountCaseImpl(favoriteService);
+  });
+
+  injector.registerDependency<SaveProductToCartCase>(() {
+    final cartProductService = injector.get<CartProductService>();
+    return SaveProductToCartCaseImpl(cartProductService);
   });
 
   runApp(const AppWidget());

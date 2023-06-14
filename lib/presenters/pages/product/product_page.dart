@@ -251,9 +251,7 @@ class _ProductPageState extends State<ProductPage> {
               const SizedBox(width: 24),
               AddToCartWidget(
                 isLoading: isLoading,
-                onTap: () {
-                  // TODO: Add to Cart
-                },
+                onTap: () => controller.addToCart(),
                 text: 'Adicionar ao carrinho',
               ),
             ],

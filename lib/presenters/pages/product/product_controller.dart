@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
 import 'package:lanchonete_app/domain/cases/get_product_by_id_case.dart';
+import 'package:lanchonete_app/domain/cases/save_product_to_cart_case.dart';
 import 'package:lanchonete_app/domain/cases/update_favorite_of_product_case.dart';
 import 'package:lanchonete_app/domain/errors/product_exception.dart';
+import 'package:lanchonete_app/domain/requests/save_product_to_cart_request.dart';
 import 'package:lanchonete_app/domain/responses/product_info_response.dart';
 import 'package:lanchonete_app/domain/services/number_service.dart';
 import 'package:lanchonete_app/presenters/pages/home/product_grid.dart';
@@ -91,5 +93,19 @@ abstract class BaseProductController with Store {
 
     final numberService = _injector.get<NumberService>();
     totalPriceStr = numberService.numToMoney(totalPrice);
+  }
+
+  @action
+  void addToCart() => _addToCart();
+  Future _addToCart() async {
+    final saveProductToCartRequest = SaveProductToCartRequest(
+      productId: _productId,
+      quantity: quantity,
+    );
+
+    final saveProductToCartCase = _injector.get<SaveProductToCartCase>();
+    await saveProductToCartCase(saveProductToCartRequest);
+
+    changeQuantity(1);
   }
 }
