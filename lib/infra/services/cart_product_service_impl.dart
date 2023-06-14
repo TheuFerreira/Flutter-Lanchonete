@@ -14,4 +14,10 @@ class CartProductServiceImpl implements CartProductService {
 
     await fetch.post(route: '/CartProduct/Save', params: json);
   }
+
+  @override
+  Future<int> count() async {
+    final data = await fetch.get(route: '/CartProduct/Count');
+    return data;
+  }
 }

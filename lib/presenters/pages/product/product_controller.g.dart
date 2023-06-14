@@ -41,6 +41,22 @@ mixin _$ProductController on BaseProductController, Store {
     });
   }
 
+  late final _$productsCartCountAtom =
+      Atom(name: 'BaseProductController.productsCartCount', context: context);
+
+  @override
+  String? get productsCartCount {
+    _$productsCartCountAtom.reportRead();
+    return super.productsCartCount;
+  }
+
+  @override
+  set productsCartCount(String? value) {
+    _$productsCartCountAtom.reportWrite(value, super.productsCartCount, () {
+      super.productsCartCount = value;
+    });
+  }
+
   late final _$favoriteAtom =
       Atom(name: 'BaseProductController.favorite', context: context);
 
@@ -153,10 +169,22 @@ mixin _$ProductController on BaseProductController, Store {
   }
 
   @override
+  void addToCart() {
+    final _$actionInfo = _$BaseProductControllerActionController.startAction(
+        name: 'BaseProductController.addToCart');
+    try {
+      return super.addToCart();
+    } finally {
+      _$BaseProductControllerActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 product: ${product},
 status: ${status},
+productsCartCount: ${productsCartCount},
 favorite: ${favorite},
 quantity: ${quantity},
 totalPriceStr: ${totalPriceStr},

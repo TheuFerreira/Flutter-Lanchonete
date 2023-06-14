@@ -45,18 +45,20 @@ class _ProductPageState extends State<ProductPage> {
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         actions: [
-          BadgeIconWidget(
-            value: '1',
-            top: 0,
-            badgeColor: const Color.fromARGB(255, 235, 143, 5),
-            iconData: const Icon(
-              Icons.shopping_cart_outlined,
-              color: Colors.black,
-            ),
-            onTap: () {
-              // TODO: Cart
-            },
-          ),
+          Observer(builder: (context) {
+            return BadgeIconWidget(
+              value: controller.productsCartCount,
+              top: 0,
+              badgeColor: const Color.fromARGB(255, 235, 143, 5),
+              iconData: const Icon(
+                Icons.shopping_cart_outlined,
+                color: Colors.black,
+              ),
+              onTap: () {
+                // TODO: Cart
+              },
+            );
+          }),
         ],
       ),
       body: Observer(builder: (context) {

@@ -7,6 +7,7 @@ import 'package:lanchonete_app/domain/cases/get_all_best_sellers_products_case.d
 import 'package:lanchonete_app/domain/cases/get_all_coupons_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_labels_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_products_case.dart';
+import 'package:lanchonete_app/domain/cases/get_count_cart_products_case.dart';
 import 'package:lanchonete_app/domain/cases/get_favorited_products_case.dart';
 import 'package:lanchonete_app/domain/cases/get_favorites_count_case.dart';
 import 'package:lanchonete_app/domain/cases/get_product_by_id_case.dart';
@@ -114,6 +115,11 @@ void main() async {
   injector.registerDependency<SaveProductToCartCase>(() {
     final cartProductService = injector.get<CartProductService>();
     return SaveProductToCartCaseImpl(cartProductService);
+  });
+
+  injector.registerDependency<GetCountCartProductsCase>(() {
+    final cartProductService = injector.get<CartProductService>();
+    return GetCountCartProductsCaseImpl(cartProductService);
   });
 
   runApp(const AppWidget());

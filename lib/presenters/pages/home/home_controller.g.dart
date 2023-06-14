@@ -25,6 +25,22 @@ mixin _$HomeController on BaseHomeController, Store {
     });
   }
 
+  late final _$productsCartCountAtom =
+      Atom(name: 'BaseHomeController.productsCartCount', context: context);
+
+  @override
+  String? get productsCartCount {
+    _$productsCartCountAtom.reportRead();
+    return super.productsCartCount;
+  }
+
+  @override
+  set productsCartCount(String? value) {
+    _$productsCartCountAtom.reportWrite(value, super.productsCartCount, () {
+      super.productsCartCount = value;
+    });
+  }
+
   late final _$statusAtom =
       Atom(name: 'BaseHomeController.status', context: context);
 
@@ -193,6 +209,7 @@ mixin _$HomeController on BaseHomeController, Store {
   String toString() {
     return '''
 favoritesCount: ${favoritesCount},
+productsCartCount: ${productsCartCount},
 status: ${status},
 bestSellersStatus: ${bestSellersStatus},
 productStatus: ${productStatus},

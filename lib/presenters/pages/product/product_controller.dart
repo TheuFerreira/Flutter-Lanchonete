@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:injector/injector.dart';
+import 'package:lanchonete_app/domain/cases/get_count_cart_products_case.dart';
 import 'package:lanchonete_app/domain/cases/get_product_by_id_case.dart';
 import 'package:lanchonete_app/domain/cases/save_product_to_cart_case.dart';
 import 'package:lanchonete_app/domain/cases/update_favorite_of_product_case.dart';
@@ -21,6 +22,9 @@ abstract class BaseProductController with Store {
 
   @observable
   PageStatus status = PageStatus.loading;
+
+  @observable
+  String? productsCartCount;
 
   @observable
   bool favorite = false;
@@ -51,6 +55,8 @@ abstract class BaseProductController with Store {
       final getProductByIdCase = _injector.get<GetProductByIdCase>();
       product = await getProductByIdCase(productId);
       favorite = product.favorite;
+
+      await _loadCartProductsCount();
 
       _calculateTotalPrice();
       status = PageStatus.completed;
@@ -105,7 +111,13 @@ abstract class BaseProductController with Store {
 
     final saveProductToCartCase = _injector.get<SaveProductToCartCase>();
     await saveProductToCartCase(saveProductToCartRequest);
+    await _loadCartProductsCount();
 
     changeQuantity(1);
+  }
+
+  Future _loadCartProductsCount() async {
+    final getCountCartProductsCase = _injector.get<GetCountCartProductsCase>();
+    productsCartCount = await getCountCartProductsCase();
   }
 }

@@ -40,16 +40,18 @@ class _HomePageState extends State<HomePage> {
               onTap: () => controller.toFavoritePage(context),
             );
           }),
-          BadgeIconWidget(
-            value: '1',
-            badgeColor: const Color.fromARGB(255, 235, 143, 5),
-            iconData: const Icon(
-              Icons.shopping_cart_outlined,
-            ),
-            onTap: () {
-              // TODO: Cart
-            },
-          ),
+          Observer(builder: (context) {
+            return BadgeIconWidget(
+              value: controller.productsCartCount,
+              badgeColor: const Color.fromARGB(255, 235, 143, 5),
+              iconData: const Icon(
+                Icons.shopping_cart_outlined,
+              ),
+              onTap: () {
+                // TODO: Cart
+              },
+            );
+          }),
         ],
       ),
       body: RefreshIndicator(

@@ -4,6 +4,7 @@ import 'package:lanchonete_app/domain/cases/get_all_best_sellers_products_case.d
 import 'package:lanchonete_app/domain/cases/get_all_coupons_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_labels_case.dart';
 import 'package:lanchonete_app/domain/cases/get_all_products_case.dart';
+import 'package:lanchonete_app/domain/cases/get_count_cart_products_case.dart';
 import 'package:lanchonete_app/domain/cases/get_favorites_count_case.dart';
 import 'package:lanchonete_app/domain/cases/update_favorite_of_product_case.dart';
 import 'package:lanchonete_app/domain/responses/coupon_response.dart';
@@ -23,6 +24,9 @@ abstract class BaseHomeController with Store {
 
   @observable
   String? favoritesCount;
+
+  @observable
+  String? productsCartCount;
 
   @observable
   PageStatus status = PageStatus.loading;
@@ -58,6 +62,7 @@ abstract class BaseHomeController with Store {
     status = PageStatus.loading;
 
     await _loadFavoritesCount();
+    await _loadCartProductsCount();
     await _loadCoupons();
     await _loadLabels();
     await _loadBestSellers();
@@ -175,5 +180,10 @@ abstract class BaseHomeController with Store {
   Future _loadFavoritesCount() async {
     final getFavoritesCountCase = _injector.get<GetFavoritesCountCase>();
     favoritesCount = await getFavoritesCountCase();
+  }
+
+  Future _loadCartProductsCount() async {
+    final getCountCartProductsCase = _injector.get<GetCountCartProductsCase>();
+    productsCartCount = await getCountCartProductsCase();
   }
 }
