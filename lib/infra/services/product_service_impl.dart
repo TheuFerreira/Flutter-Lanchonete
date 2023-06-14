@@ -76,4 +76,12 @@ class ProductServiceImpl implements ProductService {
     final models = rows.map((e) => ProductGridModel.fromMap(e)).toList();
     return models;
   }
+
+  @override
+  Future<int> countFavorites() async {
+    final data = await fetch.get(
+      route: '/Product/CountFavorites',
+    );
+    return data;
+  }
 }

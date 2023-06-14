@@ -8,4 +8,5 @@ abstract class ProductService {
       Object parameters);
   Future<bool> updateFavorite(int productId);
   Future<List<ProductGridModel>> searchFavorites(Object parameters);
+  Future<int> countFavorites();
 }

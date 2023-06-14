@@ -9,6 +9,22 @@ part of 'home_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$HomeController on BaseHomeController, Store {
+  late final _$favoritesCountAtom =
+      Atom(name: 'BaseHomeController.favoritesCount', context: context);
+
+  @override
+  String? get favoritesCount {
+    _$favoritesCountAtom.reportRead();
+    return super.favoritesCount;
+  }
+
+  @override
+  set favoritesCount(String? value) {
+    _$favoritesCountAtom.reportWrite(value, super.favoritesCount, () {
+      super.favoritesCount = value;
+    });
+  }
+
   late final _$statusAtom =
       Atom(name: 'BaseHomeController.status', context: context);
 
@@ -176,6 +192,7 @@ mixin _$HomeController on BaseHomeController, Store {
   @override
   String toString() {
     return '''
+favoritesCount: ${favoritesCount},
 status: ${status},
 bestSellersStatus: ${bestSellersStatus},
 productStatus: ${productStatus},

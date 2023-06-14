@@ -30,14 +30,16 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         title: const Text('Início'),
         actions: [
-          BadgeIconWidget(
-            value: '1',
-            badgeColor: const Color.fromARGB(255, 235, 143, 5),
-            iconData: const Icon(
-              Icons.favorite_outline,
-            ),
-            onTap: () => controller.toFavoritePage(context),
-          ),
+          Observer(builder: (context) {
+            return BadgeIconWidget(
+              value: controller.favoritesCount,
+              badgeColor: const Color.fromARGB(255, 235, 143, 5),
+              iconData: const Icon(
+                Icons.favorite_outline,
+              ),
+              onTap: () => controller.toFavoritePage(context),
+            );
+          }),
           BadgeIconWidget(
             value: '1',
             badgeColor: const Color.fromARGB(255, 235, 143, 5),
